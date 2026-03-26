@@ -1,14 +1,29 @@
 # Tasks — Implementation Plan
 
 > Status legend: `[ ]` pending · `[-]` in progress · `[x]` done · `[!]` blocked
+>
+> **Skills key — local:** `shadcn` · `frontend-design` · `agent-browser` · `find-skills`
+> **Skills key — superpowers:** `brainstorming` · `writing-plans` · `tdd` · `dispatching-parallel-agents` · `subagent-driven-development` · `systematic-debugging` · `verification-before-completion` · `simplify` · `requesting-code-review`
+
+---
+
+## Cross-Cutting Skills (every step)
+
+| Skill | When to invoke |
+|---|---|
+| `superpowers:verification-before-completion` | Before marking any step `[x]` |
+| `superpowers:systematic-debugging` | Any test failure, container error, or unexpected behavior |
+| `simplify` | After completing any major implementation block |
 
 ---
 
 ## Step 1 — Detailed DB & API Specs `[ ]`
 
+**Skills:** `superpowers:brainstorming` (index strategy, API shape, pagination)
+
 **Output location:** [.context/spec/](.context/spec/)
 
-Create detailed machine-readable spec documents before touching code. These become the source of truth for Step 2+.
+Create detailed machine-readable spec documents before touching code.
 
 **Sub-tasks:**
 - [ ] `spec/db-schema.md` — Full table definitions with column types, constraints, indexes, and rationale for each index
@@ -21,6 +36,8 @@ Create detailed machine-readable spec documents before touching code. These beco
 ---
 
 ## Step 2 — Project Scaffolding `[ ]`
+
+**Skills:** `superpowers:dispatching-parallel-agents` (`packages/api` and `packages/web` are independent — run in parallel)
 
 Set up the monorepo structure with working dev environment before writing any feature code.
 
@@ -37,9 +54,29 @@ Set up the monorepo structure with working dev environment before writing any fe
 
 ---
 
-## Step 3 — Backend Implementation `[ ]`
+## Step 3 — Unit Test Shells `[ ]`
 
-Implement all BE features against the specs from Step 1. Swagger must be reviewable before this step is marked done.
+**Skills:** `superpowers:test-driven-development` (write test shells before implementation; tests drive Step 4)
+
+Write failing unit tests for all critical business logic. No implementation yet — tests define the contracts.
+
+**Sub-tasks:**
+- [ ] Test: campaign status transition guards — edit/delete rejected when status ≠ `draft`
+- [ ] Test: `scheduled_at` validation — rejected when not a future timestamp, accepted when in the future, `null` accepted to cancel
+- [ ] Test: stats calculation — `open_rate`, `send_rate` correct values; edge cases: `total=0`, all sent, none opened
+- [ ] Test: JWT helpers — token generation produces verifiable token; invalid/expired token throws
+- [ ] Test: Zod schemas — at least one valid and one invalid payload per schema (register, login, create campaign, schedule)
+- [ ] All tests should run with `vitest run` and fail (red) at this point — implementation comes in Step 4
+
+**Links:** [spec/validation-rules.md](.context/spec/validation-rules.md) · [spec/business-rules.md](.context/spec/business-rules.md)
+
+---
+
+## Step 4 — Backend Implementation `[ ]`
+
+**Skills:** `superpowers:tdd` (make Step 3 tests pass) · `superpowers:dispatching-parallel-agents` (auth, campaign CRUD, stats routes independent) · `superpowers:requesting-code-review` (after all routes pass)
+
+Implement all BE features to make Step 3 tests green. Swagger must be reviewable before this step is marked done.
 
 **Sub-tasks:**
 - [ ] Knex migration: create all tables with constraints and indexes (from [spec/db-schema.md](.context/spec/db-schema.md))
@@ -51,71 +88,62 @@ Implement all BE features against the specs from Step 1. Swagger must be reviewa
 - [ ] Campaign action routes: `/schedule`, `/send`, `/stats`
 - [ ] Business rule enforcement: draft-only edit/delete, future `scheduled_at`, terminal send
 - [ ] Swagger setup: `swagger-jsdoc` + `swagger-ui-express` at `/api-docs`, document all endpoints
+- [ ] All Step 3 unit tests pass (green)
 - [ ] Verify: all endpoints work via Swagger UI or curl
 
-**Links:** [spec/db-schema.md](.context/spec/db-schema.md) · [spec/api-contracts.md](.context/spec/api-contracts.md) · [spec/validation-rules.md](.context/spec/validation-rules.md) · [spec/business-rules.md](.context/spec/business-rules.md) · [tasks.md → Step 1](.context/tasks.md#step-1)
+**Links:** [spec/db-schema.md](.context/spec/db-schema.md) · [spec/api-contracts.md](.context/spec/api-contracts.md) · [spec/validation-rules.md](.context/spec/validation-rules.md) · [spec/business-rules.md](.context/spec/business-rules.md) · [tasks.md → Step 3](#step-3--unit-test-shells-)
 
 ---
 
-## Step 4 — Scheduler `[ ]`
+## Step 5 — Scheduler `[ ]`
+
+**Skills:** `superpowers:tdd` (test job registration/cancellation before wiring) · `superpowers:systematic-debugging` (timing/race issues)
 
 Implement background job that auto-sends scheduled campaigns at their `scheduled_at` time.
 
 **Sub-tasks:**
 - [ ] Install `node-schedule` in `packages/api`
 - [ ] Create `src/scheduler/index.ts` — register all pending scheduled campaigns as jobs at app startup
-- [ ] On each job fire: query DB for campaign, verify status still `scheduled`, execute send logic (reuse send service from Step 3)
-- [ ] On campaign schedule/cancel (PATCH to `scheduled_at`): cancel existing job if any, create new job if `scheduled_at` is set
+- [ ] On each job fire: query DB for campaign, verify status still `scheduled`, execute send logic (reuse send service from Step 4)
+- [ ] On campaign schedule/cancel (update to `scheduled_at`): cancel existing job if any, create new job if `scheduled_at` is set
 - [ ] Ensure jobs are cleaned up on process shutdown (graceful shutdown handler)
 - [ ] Verify: schedule a campaign 1–2 minutes in future, confirm it auto-sends
 
-**Links:** [spec/business-rules.md](.context/spec/business-rules.md) · [tasks.md → Step 3](.context/tasks.md#step-3)
-
----
-
-## Step 5 — Unit Tests `[ ]`
-
-Cover critical business logic with focused, fast unit tests (no DB required).
-
-**Sub-tasks:**
-- [ ] Test: campaign status transition guards (cannot edit/delete non-draft)
-- [ ] Test: `scheduled_at` must be in the future (validation function)
-- [ ] Test: stats calculation (`open_rate`, `send_rate` with edge cases: total=0, all sent, none opened)
-- [ ] Test: JWT token generation and verification helpers
-- [ ] Test: Zod schema validation — at least one valid and one invalid case per schema
-- [ ] Minimum 3 meaningful tests total; aim for 8–10 for good coverage of core logic
-
-**Links:** [spec/business-rules.md](.context/spec/business-rules.md) · [spec/validation-rules.md](.context/spec/validation-rules.md)
+**Links:** [spec/business-rules.md](.context/spec/business-rules.md) · [tasks.md → Step 4](#step-4--backend-implementation-)
 
 ---
 
 ## Step 6 — Integration Test `[ ]`
 
+**Skills:** `superpowers:tdd` · `superpowers:systematic-debugging` (container startup issues)
+
 One end-to-end integration test that spins up a real PostgreSQL database via Testcontainers.
 
 **Sub-tasks:**
 - [ ] Install `testcontainers` and `@testcontainers/postgresql` in `packages/api`
-- [ ] Write integration test file `src/__tests__/campaign-flow.integration.test.ts`
+- [ ] Write `src/__tests__/campaign-flow.integration.test.ts`
 - [ ] Test flow: register user → login → create campaign → add recipients → schedule → send → verify stats
 - [ ] Run migrations against test container before tests, clean up after
 - [ ] Verify: test passes with `vitest run` (may take 30–60s for container startup)
 
-**Links:** [tasks.md → Step 5](.context/tasks.md#step-5)
+**Links:** [tasks.md → Step 3](#step-3--unit-test-shells-) · [tasks.md → Step 4](#step-4--backend-implementation-)
 
 ---
 
 ## Step 7 — Frontend Screen Specs `[ ]`
+
+**Skills:** `superpowers:brainstorming` (component decomposition, state ownership, RTK Query cache invalidation)
 
 **Output location:** [.context/spec/screens/](.context/spec/screens/)
 
 Write UI specs before implementing the frontend. These guide Step 8.
 
 **Sub-tasks:**
-- [ ] `spec/screens/login.md` — UI components (form fields, button), validation messages, API call (`POST /auth/login`), redirect logic, error display
-- [ ] `spec/screens/campaigns-list.md` — Component tree, data source (RTK Query hook), status badge color map, pagination behavior, empty state, skeleton loader
-- [ ] `spec/screens/campaign-new.md` — Form fields (name, subject, QuillJS body, recipient multi-input), submit behavior, redirect on success, error handling
-- [ ] `spec/screens/campaign-detail.md` — Sections (header, stats, recipients table, actions), conditional action buttons per status, progress bars for rates, error/loading states
-- [ ] Each spec should include: component breakdown, props/data shape, validation rules, API endpoints called, success/error states
+- [ ] `spec/screens/login.md` — Components, validation messages, API call (`POST /auth/login`), redirect logic, error display
+- [ ] `spec/screens/campaigns-list.md` — Component tree, RTK Query hook, status badge color map, pagination, empty state, skeleton loader
+- [ ] `spec/screens/campaign-new.md` — Form fields (name, subject, QuillJS body, recipient multi-input), submit behavior, redirect, error handling
+- [ ] `spec/screens/campaign-detail.md` — Sections (header, stats, recipients table, actions), conditional buttons per status, progress bars, error/loading states
+- [ ] Each spec: component breakdown, props/data shape, validation rules, API endpoints called, success/error states
 
 **Links:** [spec.md](.context/spec.md) · [spec/api-contracts.md](.context/spec/api-contracts.md)
 
@@ -123,21 +151,28 @@ Write UI specs before implementing the frontend. These guide Step 8.
 
 ## Step 8 — Frontend Implementation `[ ]`
 
+**Skills:**
+- `frontend-design` — UI design direction, campaign cards, stats display, overall aesthetic
+- `shadcn` — install and compose shadcn/ui components; follow shadcn rules strictly
+- `superpowers:dispatching-parallel-agents` — Redux/RTK Query setup vs page components are independent
+- `agent-browser` — smoke-test the running UI (login flow, campaign CRUD, stats display)
+- `superpowers:requesting-code-review` — final review before submission
+
 Implement all FE features against the screen specs from Step 7.
 
 **Sub-tasks:**
 - [ ] Redux store: `authSlice` (token, user, isAuthenticated) persisted to localStorage; `themeSlice` (light/dark)
 - [ ] RTK Query base API: base URL from env var, auto-inject Bearer token from store
 - [ ] RTK Query endpoints: all campaign CRUD and action endpoints
-- [ ] Auth: login page, register page (optional), protected route wrapper, logout
-- [ ] `shadcn/ui` components: install Button, Badge, Card, Input, Form, Skeleton, Progress, Dialog, Table
-- [ ] `/campaigns` list page: campaign cards/table with status badges, pagination, loading skeletons
+- [ ] Auth: login page, protected route wrapper (`<RequireAuth>`), logout
+- [ ] shadcn/ui components: `Button`, `Badge`, `Card`, `Input`, `Form`, `Skeleton`, `Progress`, `AlertDialog`, `Table`, `Separator`, `Sonner` (toast)
+- [ ] `/campaigns` list page: campaign cards with status badges, pagination, loading skeletons, empty state
 - [ ] `/campaigns/new` page: form with React Hook Form + Zod resolver, QuillJS rich text for body, multi-email input for recipients
-- [ ] `/campaigns/:id` detail page: stats section with progress bars, recipient list, conditional action buttons (Schedule, Send, Delete), confirmation dialogs for destructive actions
-- [ ] Error handling: RTK Query error states shown as toast or inline messages
-- [ ] Responsive layout: works on desktop; mobile-friendly is a bonus
+- [ ] `/campaigns/:id` detail page: stats with progress bars, recipient list, conditional action buttons, confirmation dialogs for destructive actions
+- [ ] Error handling: RTK Query error states shown via `sonner` toast or inline messages
+- [ ] `agent-browser` smoke test: open app, login, create campaign, verify detail page renders
 
-**Links:** [spec/screens/login.md](.context/spec/screens/login.md) · [spec/screens/campaigns-list.md](.context/spec/screens/campaigns-list.md) · [spec/screens/campaign-new.md](.context/spec/screens/campaign-new.md) · [spec/screens/campaign-detail.md](.context/spec/screens/campaign-detail.md) · [tasks.md → Step 7](.context/tasks.md#step-7)
+**Links:** [spec/screens/login.md](.context/spec/screens/login.md) · [spec/screens/campaigns-list.md](.context/spec/screens/campaigns-list.md) · [spec/screens/campaign-new.md](.context/spec/screens/campaign-new.md) · [spec/screens/campaign-detail.md](.context/spec/screens/campaign-detail.md) · [tasks.md → Step 7](#step-7--frontend-screen-specs-)
 
 ---
 
@@ -145,6 +180,8 @@ Implement all FE features against the screen specs from Step 7.
 
 - [ ] `docker compose up` starts everything cleanly
 - [ ] `/api-docs` shows all endpoints in Swagger UI
+- [ ] All Step 3 unit tests pass
+- [ ] Integration test (Step 6) passes
 - [ ] Seed data is loaded and browsable via the UI
 - [ ] All 8 steps marked `[x]`
 - [ ] README updated with setup instructions + "How I Used Claude Code" section
