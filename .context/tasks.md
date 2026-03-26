@@ -23,13 +23,15 @@
 
 **Output location:** [.context/spec/](.context/spec/)
 
-Create detailed machine-readable spec documents before touching code.
+Create detailed spec documents in plain English before touching code. **No code in spec files** — prose, tables, and bullet lists only. Agents translate spec language into code.
+
+**Pause after commit** — wait for human review before proceeding to Step 2.
 
 **Sub-tasks:**
-- [ ] `spec/db-schema.md` — Full table definitions with column types, constraints, indexes, and rationale for each index
-- [ ] `spec/api-contracts.md` — Every endpoint: method, path, request shape (with Zod schema examples), response shape, HTTP status codes, error codes
-- [ ] `spec/validation-rules.md` — Per-field validation rules for all request bodies (min/max, format, required/optional, business constraints)
-- [ ] `spec/business-rules.md` — State machine for campaign status transitions, ownership rules, scheduler behavior
+- [ ] `spec/db-schema.md` — All 4 tables: exact column names, data types, nullability, default values, constraints (UNIQUE, CHECK, FK, CASCADE/RESTRICT), composite PKs, and all required indexes with a one-sentence rationale for each
+- [ ] `spec/api-contracts.md` — Every endpoint: method, path, auth required, request fields (name + type + required/optional), response fields (name + type), HTTP status codes used and the condition for each, error response format
+- [ ] `spec/validation-rules.md` — Per-field validation rules for every request body and path/query param: field name, type, required/optional, constraints (min/max length, format, range, business constraint), error message
+- [ ] `spec/business-rules.md` — Campaign status state machine (all valid transitions and conditions), ownership rule, edit/delete guard, schedule constraint, send terminal rule, recipient upsert rule, stats formula, scheduler startup and runtime behavior
 
 **Links:** [constituents.md](.context/constituents.md) · [spec.md](.context/spec.md)
 
@@ -38,6 +40,8 @@ Create detailed machine-readable spec documents before touching code.
 ## Step 2 — Project Scaffolding `[ ]`
 
 **Skills:** `superpowers:dispatching-parallel-agents` (`packages/api` and `packages/web` are independent — run in parallel)
+
+**Pause after commit** — wait for human review before proceeding to Step 3.
 
 Set up the monorepo structure with working dev environment before writing any feature code.
 
@@ -58,6 +62,8 @@ Set up the monorepo structure with working dev environment before writing any fe
 
 **Skills:** `superpowers:test-driven-development` (write test shells before implementation; tests drive Step 4)
 
+**Pause after commit** — wait for human review before proceeding to Step 4.
+
 Write failing unit tests for all critical business logic. No implementation yet — tests define the contracts.
 
 **Sub-tasks:**
@@ -75,6 +81,8 @@ Write failing unit tests for all critical business logic. No implementation yet 
 ## Step 4 — Backend Implementation `[ ]`
 
 **Skills:** `superpowers:tdd` (make Step 3 tests pass) · `superpowers:dispatching-parallel-agents` (auth, campaign CRUD, stats routes independent) · `superpowers:requesting-code-review` (after all routes pass)
+
+**Pause after commit** — wait for human review before proceeding to Step 5.
 
 Implement all BE features to make Step 3 tests green. Swagger must be reviewable before this step is marked done.
 
@@ -99,6 +107,8 @@ Implement all BE features to make Step 3 tests green. Swagger must be reviewable
 
 **Skills:** `superpowers:tdd` (test job registration/cancellation before wiring) · `superpowers:systematic-debugging` (timing/race issues)
 
+**Pause after commit** — wait for human review before proceeding to Step 6.
+
 Implement background job that auto-sends scheduled campaigns at their `scheduled_at` time.
 
 **Sub-tasks:**
@@ -116,6 +126,8 @@ Implement background job that auto-sends scheduled campaigns at their `scheduled
 ## Step 6 — Integration Test `[ ]`
 
 **Skills:** `superpowers:tdd` · `superpowers:systematic-debugging` (container startup issues)
+
+**Pause after commit** — wait for human review before proceeding to Step 7.
 
 One end-to-end integration test that spins up a real PostgreSQL database via Testcontainers.
 
@@ -136,7 +148,9 @@ One end-to-end integration test that spins up a real PostgreSQL database via Tes
 
 **Output location:** [.context/spec/screens/](.context/spec/screens/)
 
-Write UI specs before implementing the frontend. These guide Step 8.
+**Pause after commit** — wait for human review before proceeding to Step 8.
+
+Write UI specs before implementing the frontend. These guide Step 8. **No code in spec files** — plain English only.
 
 **Sub-tasks:**
 - [ ] `spec/screens/login.md` — Components, validation messages, API call (`POST /auth/login`), redirect logic, error display

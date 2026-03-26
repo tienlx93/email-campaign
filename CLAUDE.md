@@ -19,8 +19,13 @@ Read these files to understand the project before doing any work:
 
 1. **Before starting any task**: read [tasks.md](.context/tasks.md) to find the current step and its linked spec files.
 2. **Before implementing anything**: read the linked spec file(s) for that step — they are the source of truth.
-3. **After completing a step**: update the corresponding checkboxes in [tasks.md](.context/tasks.md) to `[x]`.
+3. **After completing a step**: commit, update the checkboxes in [tasks.md](.context/tasks.md) to `[x]`, then **stop and wait for human review** before starting the next step.
 4. **When generating spec output** (Steps 1, 7): save files to `.context/spec/` and link them back in [tasks.md](.context/tasks.md).
+
+## Spec Writing Rules
+
+- **No code in spec files.** Write specs in plain English — prose, tables, and bullet lists only. No TypeScript, SQL, JSON, or code blocks. Agents translate spec language into code; they do not copy from specs.
+- **Be precise.** Use exact field names, types, constraints, and rule wording. Avoid vague language.
 
 ---
 

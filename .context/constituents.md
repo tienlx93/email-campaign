@@ -79,6 +79,23 @@ All services networked together; volumes for postgres data persistence and node_
 
 ---
 
+## Spec Writing Rules
+
+These rules apply to all spec files written by agents (Steps 1, 7 and any derived specs):
+
+1. **No code in spec files.** Specs must be written in plain English (prose, tables, bullet lists). No TypeScript, SQL DDL, JSON examples, or code blocks. Agents translate spec language into code — they do not copy-paste from specs.
+2. **Precise, unambiguous language.** Use exact field names, types, constraints, and rule descriptions. Avoid vague terms like "appropriate" or "reasonable".
+3. **Structured sections.** Use consistent headings so agents can navigate specs programmatically.
+
+---
+
+## Execution Rules
+
+1. **Pause after each step.** After a step is committed, stop and wait for human review before proceeding to the next step. Do not auto-chain steps.
+2. **One step at a time.** Never dispatch the next step until the human explicitly approves the current one.
+
+---
+
 ## Context Documents
 
 | File | Purpose |
