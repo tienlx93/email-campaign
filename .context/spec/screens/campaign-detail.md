@@ -8,7 +8,7 @@ auth: required (redirect to /login if no valid token)
 
 ## Purpose
 
-Shows the full details of a single campaign: metadata, email body preview, stats with progress bars, recipient list with per-recipient status, and context-sensitive action buttons. All mutating actions (schedule, send, delete) are performed from this screen.
+Shows the full details of a single campaign: metadata, email body (with a preview/edit toggle for drafts), stats with progress bars, recipient list with per-recipient status, and context-sensitive action buttons. All mutating actions (schedule, send, delete, edit) are performed from this screen.
 
 ---
 
@@ -18,8 +18,8 @@ Single-column layout with a back navigation link at the top, followed by four se
 
 1. Header section — campaign metadata and action buttons
 2. Stats section — send and open rate visualisation
-3. Body preview section — the HTML email body rendered read-only
-4. Recipients section — paginated table of linked recipients
+3. Body section — edit/preview toggle (draft only) or read-only preview (scheduled/sent)
+4. Recipients section — table of linked recipients
 
 ---
 
@@ -57,6 +57,7 @@ The set of buttons shown depends on campaign status. Buttons are right-aligned o
 
 **Status: draft**
 
+- Edit / Preview toggle button (outline variant) — toggles the body section between edit mode and preview mode (see Section 3 below); label reads "Edit" when currently in preview mode, "Preview" when currently in edit mode
 - Schedule button (secondary variant) — opens the ScheduleDialog
 - Send button (destructive variant) — opens the SendConfirmDialog
 - Delete button (ghost/outline variant) — opens the DeleteConfirmDialog
@@ -137,12 +138,42 @@ The send rate and open rate progress bars display the percentage rounded to one 
 
 ---
 
-## Section 3 — Body Preview
+## Section 3 — Body (Edit / Preview Toggle)
+
+This section behaves differently depending on campaign status and the active toggle mode.
+
+### For scheduled and sent campaigns (always read-only)
 
 - Label: "Email Body"
 - The raw HTML from the campaign body field is rendered inside a sandboxed container (dangerouslySetInnerHTML is acceptable here since the content is authored by the authenticated user)
 - A light border and slight background tint distinguish the preview area from the surrounding page
-- The preview is read-only; no editing controls are shown
+- No editing controls are shown
+
+### For draft campaigns — Preview mode (default)
+
+- Label: "Email Body" with a "Preview" mode indicator
+- Same read-only HTML render as above
+- The Edit/Preview toggle button in the header (labeled "Edit") switches to edit mode
+
+### For draft campaigns — Edit mode
+
+- Label: "Email Body" with an "Editing" mode indicator
+- A React Hook Form instance is activated, pre-populated with the current campaign's name, subject, body, and recipients
+- The body field is rendered as a React Quill editor pre-filled with the existing HTML body
+- The name and subject fields are rendered as text inputs above the Quill editor (the recipients field is not editable from this inline form — recipients are managed separately)
+- A "Save changes" button (primary variant) appears below the editor
+- A "Discard" button (ghost variant) appears next to Save, which reverts the form to the last saved values and switches back to preview mode without an API call
+- Clicking the Edit/Preview toggle button in the header (now labeled "Preview") also discards unsaved changes and switches back to preview mode
+
+**Save behavior:**
+
+- On click of "Save changes": calls the RTK Query `updateCampaign` mutation (PATCH /campaigns/:id) with only the changed fields (name, subject, body)
+- While in-flight: the Save button shows a spinner and is disabled; the editor and inputs are read-only
+- On HTTP 200: switches back to preview mode; the updated campaign data is reflected immediately via RTK Query cache update; shows a success toast "Changes saved"
+- On HTTP 409 (no longer draft): shows an error toast "Campaign can no longer be edited"; switches back to preview mode
+- On HTTP 400: shows the API error message inside the edit section below the editor; stays in edit mode
+
+**Initial state:** the page always opens in preview mode, regardless of status.
 
 ---
 

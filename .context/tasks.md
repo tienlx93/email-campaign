@@ -162,7 +162,7 @@ Write UI specs before implementing the frontend. These guide Step 8. **No code i
 - [x] `spec/screens/campaign-detail.md` — Sections (header, stats, recipients table, actions), conditional buttons per status, progress bars, error/loading states
 - [x] Each spec: component breakdown, props/data shape, validation rules, API endpoints called, success/error states
 
-**Links:** [spec.md](.context/spec.md) · [spec/api-contracts.md](.context/spec/api-contracts.md) · [spec/screens/login.md](.context/spec/screens/login.md) · [spec/screens/campaigns-list.md](.context/spec/screens/campaigns-list.md) · [spec/screens/campaign-new.md](.context/spec/screens/campaign-new.md) · [spec/screens/campaign-detail.md](.context/spec/screens/campaign-detail.md)
+**Links:** [spec.md](.context/spec.md) · [spec/api-contracts.md](.context/spec/api-contracts.md) · [spec/screens/login.md](.context/spec/screens/login.md) · [spec/screens/register.md](.context/spec/screens/register.md) · [spec/screens/layout.md](.context/spec/screens/layout.md) · [spec/screens/campaigns-list.md](.context/spec/screens/campaigns-list.md) · [spec/screens/campaign-new.md](.context/spec/screens/campaign-new.md) · [spec/screens/campaign-detail.md](.context/spec/screens/campaign-detail.md)
 
 ---
 

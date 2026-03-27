@@ -14,7 +14,7 @@ Allows an existing user to authenticate. On success, stores the JWT in localStor
 
 ## Layout
 
-Single centered card, vertically centered on the full viewport. The card contains a title ("Sign in"), the form fields, and a submit button. Below the button, a link reads "Don't have an account? Register" — this navigates to a register page (out of scope for now; link is present but may point to a placeholder).
+Single centered card, vertically centered on the full viewport. The card contains a title ("Sign in"), the form fields, and a submit button. Below the button, a line of muted text reads "Don't have an account?" followed by a link "Register" that navigates to /register.
 
 ---
 
