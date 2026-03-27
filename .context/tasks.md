@@ -123,7 +123,7 @@ Implement background job that auto-sends scheduled campaigns at their `scheduled
 
 ---
 
-## Step 6 — Integration Test `[ ]`
+## Step 6 — Integration Test `[x]`
 
 **Skills:** `superpowers:tdd` · `superpowers:systematic-debugging` (container startup issues)
 
@@ -132,11 +132,14 @@ Implement background job that auto-sends scheduled campaigns at their `scheduled
 One end-to-end integration test that spins up a real PostgreSQL database via Testcontainers. The integration tests should be splitted from Unit test, run on demand (default skipped by CI).
 
 **Sub-tasks:**
-- [ ] Install `testcontainers` and `@testcontainers/postgresql` in `packages/api`
-- [ ] Write `src/__integration_tests__/campaign-flow.integration.test.ts`
-- [ ] Test flow: register user → login → create campaign → add recipients → schedule → send → verify stats
-- [ ] Run migrations against test container before tests, clean up after
-- [ ] Verify: test passes with `vitest run:integration` (may take 30–60s for container startup)
+- [x] Install `testcontainers`, `@testcontainers/postgresql`, `supertest`, `@types/supertest` in `packages/api`
+- [x] Split `app.ts` (Express config) from `index.ts` (server listen) so supertest can import app without starting server
+- [x] Write `src/__integration_tests__/setup/global.setup.ts` — starts `postgres:16-alpine` container, sets `DATABASE_URL`, runs migrations, tears down after suite
+- [x] Write `src/__integration_tests__/campaign-flow.integration.test.ts` — full flow: register → login → create campaign with recipients → schedule → send → verify stats; also tests 409 double-send and edit/delete guards
+- [x] Add `vitest.integration.config.ts` (separate from unit config) with `globalSetup` and `testTimeout: 120000`; unit `vitest.config.ts` excludes `__integration_tests__/`
+- [x] Add `"types": ["vitest/globals"]` to `tsconfig.json` so IDE resolves `describe`/`it`/`expect` without installing Jest types
+- [x] Add `test:integration` script to `packages/api/package.json` and root `package.json`; also add `migrate` and `migrate:rollback` to root workspace scripts
+- [x] Verify: `npm test` runs 27 unit tests only; `npm run test:integration` runs 13 integration tests against real Postgres
 
 **Links:** [tasks.md → Step 3](#step-3--unit-test-shells-) · [tasks.md → Step 4](#step-4--backend-implementation-)
 
