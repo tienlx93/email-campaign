@@ -10,6 +10,20 @@ Mini Campaign Manager is a small full-stack MarTech app to create, schedule, sen
 - Schedule campaigns for future send, cancel schedule, or send immediately.
 - View campaign-level stats (`total`, `sent`, `failed`, `opened`, `open_rate`, `send_rate`).
 
+### Screenshots
+
+Campaign overview with quick access to campaign actions.
+
+![Campaign List](docs/img-1-campaign-list.png)
+
+Campaign creation/edit flow with scheduling controls.
+
+![Campaign Form](docs/img-2-campaigns-list.png)
+
+Campaign detail page showing recipients and delivery stats.
+
+![Campaign Details](docs/img-3-campaign-details..png)
+
 ## Basic Architecture
 
 - **Monorepo** managed by **npm workspaces**, with two packages:
@@ -82,17 +96,22 @@ The demo seed uses the following data:
 
 ## Tests
 
-Unit tests:
+Backend unit tests (Vitest):
 
 ```bash
 npm test
 ```
 
-Integration tests:
+Backend integration tests (Vitest + Testcontainers):
 
 ```bash
 npm run test:integration
 ```
+
+Notes:
+
+- Unit tests cover isolated business logic and helper behavior in the backend.
+- Integration tests spin up real infrastructure with Testcontainers to validate API and database behavior together.
 
 ## How I Used Claude Code
 
