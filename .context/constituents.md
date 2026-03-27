@@ -81,8 +81,23 @@ email-campaign/
 
 ### Key conventions
 - RTK Query base API configured with JWT Bearer header injected from Redux store
-- shadcn/ui components installed individually via CLI (`npx shadcn-ui add ...`)
-- Tailwind config extended with shadcn/ui CSS variables
+- shadcn/ui components installed individually via CLI (`npx shadcn@latest add <component>`); never edit generated files in `src/components/ui/`
+- Tailwind CSS v4 — no `tailwind.config.ts`; CSS variables configured via `@theme inline` block in `index.css`
+- Rich text editor uses `react-quill-new` (React 19-compatible fork); shared config in `src/lib/quill.ts`
+- Proxy target for `/api` requests configured via `VITE_API_URL` env var (default `http://localhost:3000`)
+
+### Frontend code structure — follow when editing
+See [ARCHITECTURE.md](../ARCHITECTURE.md#frontend-layer-rules) for the full rules. Summary:
+
+| Folder | Rule |
+|---|---|
+| `src/pages/` | Thin orchestrators only. No inline Zod schemas, no inline helpers, no business logic. |
+| `src/components/<domain>/` | Domain components. Large sections (identified by comment headers) and sub-components live here. |
+| `src/helpers/` | Pure functions — `date.ts` (formatting) and `api-error.ts` (RTK error extraction). No React. |
+| `src/validations/` | One file per domain. Each exports a Zod schema constant + the inferred TypeScript form type. No React. |
+| `src/models/` | Interface-only type definitions. `auth.type.ts` and `campaign.type.ts`. No functions, no Zod. |
+| `src/store/` | RTK Query endpoints are the only place API calls are made. `api.ts` re-exports model types. |
+| `src/components/ui/` | shadcn/ui — never edit directly. Re-add via CLI with `--overwrite` to update. |
 
 ---
 

@@ -1,4 +1,4 @@
-# Architecture — Mini Campaign Manager
+# Architecture — Mini Campaign Manager - API Backend
 
 ## Overview
 
@@ -50,10 +50,6 @@ HTTP Request
 | `src/db/` | Knex instance, migrations (`migrations/`), seeds (`seeds/`). |
 | `src/scheduler/` | `node-schedule` job registry. Initialized at startup by `initScheduler()`. |
 | `src/services/campaign.utils.ts` | Pure functions (`isCampaignEditable`, `calculateStats`). No DB access. Tested directly by unit tests. |
-
-### `packages/web` — React Frontend
-
-_(Documented when Step 8 is complete.)_
 
 ---
 
