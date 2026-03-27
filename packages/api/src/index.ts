@@ -1,6 +1,7 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { ServiceError } from './errors/ServiceError';
 
 dotenv.config();
 
@@ -21,6 +22,20 @@ app.get('/health', (_req, res) => {
 app.use('/auth', authRouter);
 app.use('/campaigns', campaignRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+// Global error handler — must have exactly 4 params for Express to recognize it
+app.use((err: Error, _req: Request, res: Response, next: NextFunction) => {
+  if (err instanceof ServiceError) {
+    res.status(err.statusCode).json({ error: err.message });
+    return;
+  }
+  console.error(err);
+  if (res.headersSent) {
+    next(err);
+    return;
+  }
+  res.status(500).json({ error: 'Internal server error' });
+});
 
 const PORT = process.env.PORT || 3000;
 

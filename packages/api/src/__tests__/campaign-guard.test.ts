@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { isCampaignEditable } from '../services/campaignService';
+import { isCampaignEditable } from '../services/campaign.utils';
 
 describe('isCampaignEditable', () => {
   it('allows editing when status is draft', () => {

@@ -97,7 +97,7 @@ Implement all BE features to make Step 3 tests green. Swagger must be reviewable
 - [x] Business rule enforcement: draft-only edit/delete, future `scheduled_at`, terminal send
 - [x] Swagger setup: `swagger-jsdoc` + `swagger-ui-express` at `/api-docs`, document all endpoints
 - [x] All Step 3 unit tests pass (green)
-- [ ] Verify: all endpoints work via Swagger UI or curl
+- [x] Verify: all endpoints work via Swagger UI or curl
 
 **Links:** [spec/db-schema.md](.context/spec/db-schema.md) · [spec/api-contracts.md](.context/spec/api-contracts.md) · [spec/validation-rules.md](.context/spec/validation-rules.md) · [spec/business-rules.md](.context/spec/business-rules.md) · [tasks.md → Step 3](#step-3--unit-test-shells-)
 

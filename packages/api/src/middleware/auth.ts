@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { z } from 'zod';
 import { RequestHandler } from 'express';
 
 declare module 'express-serve-static-core' {
@@ -6,6 +7,11 @@ declare module 'express-serve-static-core' {
     user?: { id: number; email: string };
   }
 }
+
+const jwtPayloadSchema = z.object({
+  id: z.number().int().positive(),
+  email: z.string().email(),
+});
 
 export function generateToken(payload: object): string {
   const secret = process.env.JWT_SECRET;
@@ -32,8 +38,12 @@ export const authMiddleware: RequestHandler = (req, res, next) => {
   }
   const token = authHeader.slice(7);
   try {
-    const decoded = verifyToken(token) as { id: number; email: string };
-    req.user = { id: decoded.id, email: decoded.email };
+    const decoded = verifyToken(token);
+    const result = jwtPayloadSchema.safeParse(decoded);
+    if (!result.success) {
+      throw new Error('Invalid token payload shape');
+    }
+    req.user = { id: result.data.id, email: result.data.email };
     next();
   } catch {
     res.status(401).json({ error: 'Invalid or expired token' });

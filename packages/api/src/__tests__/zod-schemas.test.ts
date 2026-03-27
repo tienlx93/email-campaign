@@ -1,10 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { ZodError } from 'zod';
-import {
-  registerSchema,
-  loginSchema,
-  createCampaignSchema,
-} from '../validators/schemas';
+import { registerSchema, loginSchema } from '../validators/auth.validator';
+import { createCampaignSchema } from '../validators/campaign.validator';
 
 describe('registerSchema', () => {
   it('valid payload passes', () => {
