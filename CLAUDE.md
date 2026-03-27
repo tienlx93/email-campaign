@@ -38,7 +38,9 @@ Read these files to understand the project before doing any work:
 
 Full framework details in [constituents.md](.context/constituents.md).
 
-**Before writing any backend code, read [ARCHITECTURE.md](ARCHITECTURE.md).** It defines the four-layer architecture (Routes → Validators → Controllers → Services), layer responsibilities, error flow, and file naming conventions. All backend code must follow these rules.
+**Before writing backend code, read [packages/api/ARCHITECTURE.md](packages/api/ARCHITECTURE.md).**
+**Before writing frontend code, read [packages/web/ARCHITECTURE.md](packages/web/ARCHITECTURE.md).**
+Each package architecture file is the source of truth for its layer rules, flow, and naming conventions.
 
 ---
 
@@ -49,6 +51,7 @@ When you introduce or change an architectural pattern — not a feature, but a *
 ### What counts as an architecture decision
 
 Update the docs when you:
+
 - Introduce a new layer, class pattern, or file convention (e.g. "all validators extend BaseValidator")
 - Change how errors are handled across the codebase (e.g. ServiceError + global handler)
 - Add or remove a cross-cutting convention (e.g. "query validators write to req.body")
@@ -56,6 +59,7 @@ Update the docs when you:
 - Introduce a new shared base class, abstract type, or utility pattern used in more than one file
 
 Do **not** update the docs for:
+
 - Adding a new endpoint, route, or page (that's a feature, not an architectural decision)
 - Renaming a variable or refactoring within a single file
 - Fixing a bug without changing the pattern
@@ -64,7 +68,8 @@ Do **not** update the docs for:
 
 | Document | What to update |
 |---|---|
-| [ARCHITECTURE.md](ARCHITECTURE.md) | Layer diagram, per-layer rules, error flow, file naming table — anything that governs how layers interact |
+| [packages/api/ARCHITECTURE.md](packages/api/ARCHITECTURE.md) | Backend layer diagram, per-layer rules, error flow, naming conventions |
+| [packages/web/ARCHITECTURE.md](packages/web/ARCHITECTURE.md) | Frontend flow, layer responsibilities, validation and state-management conventions |
 | [.context/constituents.md](.context/constituents.md) | "Key conventions" section — concise bullet pointing to ARCHITECTURE.md for detail |
 
 ### How to write it
@@ -72,7 +77,7 @@ Do **not** update the docs for:
 - State the rule, not the history. Write "Controllers must not import from `db`" not "We decided to move DB access to services".
 - One rule per bullet. Avoid compound sentences that hide two constraints.
 - If the rule has a non-obvious reason, add a one-line rationale in parentheses.
-- Keep ARCHITECTURE.md as the source of detail. constituents.md bullets are summaries with a link.
+- Keep each package `ARCHITECTURE.md` as the source of detail. `.context/constituents.md` bullets are summaries with links.
 
 ---
 
@@ -92,13 +97,16 @@ Full business rules in [spec.md](.context/spec.md) and [.context/spec/business-r
 ## npm Scripts Convention
 
 In `packages/api`:
+
 - `npm run dev` — start API with hot reload
 - `npm run migrate` — run Knex migrations
 - `npm run seed` — run Knex seeds
 - `npm run test` — run Vitest
 
 In `packages/web`:
+
 - `npm run dev` — start Vite dev server
 
 At root:
+
 - `docker compose up` — start all services (postgres + api + web)

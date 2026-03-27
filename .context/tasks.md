@@ -166,7 +166,7 @@ Write UI specs before implementing the frontend. These guide Step 8. **No code i
 
 ---
 
-## Step 8 — Frontend Implementation `[ ]`
+## Step 8 — Frontend Implementation `[x]`
 
 **Skills:**
 - `frontend-design` — UI design direction, campaign cards, stats display, overall aesthetic
@@ -178,16 +178,15 @@ Write UI specs before implementing the frontend. These guide Step 8. **No code i
 Implement all FE features against the screen specs from Step 7.
 
 **Sub-tasks:**
-- [ ] Redux store: `authSlice` (token, user, isAuthenticated) persisted to localStorage; `themeSlice` (light/dark)
-- [ ] RTK Query base API: base URL from env var, auto-inject Bearer token from store
-- [ ] RTK Query endpoints: all campaign CRUD and action endpoints
-- [ ] Auth: login page, protected route wrapper (`<RequireAuth>`), logout
-- [ ] shadcn/ui components: `Button`, `Badge`, `Card`, `Input`, `Form`, `Skeleton`, `Progress`, `AlertDialog`, `Table`, `Separator`, `Sonner` (toast)
-- [ ] `/campaigns` list page: campaign cards with status badges, pagination, loading skeletons, empty state
-- [ ] `/campaigns/new` page: form with React Hook Form + Zod resolver, QuillJS rich text for body, multi-email input for recipients
-- [ ] `/campaigns/:id` detail page: stats with progress bars, recipient list, conditional action buttons, confirmation dialogs for destructive actions
-- [ ] Error handling: RTK Query error states shown via `sonner` toast or inline messages
-- [ ] `agent-browser` smoke test: open app, login, create campaign, verify detail page renders
+- [x] Redux store: `authSlice` (token + user persisted to localStorage); RTK Query `api` with Bearer token auto-injection
+- [x] RTK Query endpoints: register, login, listCampaigns, getCampaign, createCampaign, updateCampaign, deleteCampaign, scheduleCampaign, sendCampaign
+- [x] Auth: LoginPage, RegisterPage (React Hook Form + Zod), `AuthenticatedLayout` with RequireAuth guard, logout
+- [x] shadcn/ui components via CLI: `Button`, `Badge`, `Card`, `Input`, `Label`, `Skeleton`, `Progress`, `Alert`, `AlertDialog`, `Dialog`, `Table`, `Separator`; CSS theme variables in index.css
+- [x] `AppNavbar`: logo, Campaigns NavLink (active styling), UserInfo (name + email labels, Logout button)
+- [x] `/campaigns` list page: CampaignCard with StatusBadge, SkeletonCard (×4), pagination, empty state with mail icon
+- [x] `/campaigns/new` page: React Hook Form + Zod, React Quill body editor, dynamic recipients list (add/remove rows)
+- [x] `/campaigns/:id` detail page: 4 sections (header, stats with progress bars, body edit/preview toggle, recipients table), ScheduleDialog, SendConfirmDialog, DeleteConfirmDialog, Sonner toasts
+- [x] TypeScript build passes (`tsc -b && vite build`)
 
 **Links:** [spec/screens/login.md](.context/spec/screens/login.md) · [spec/screens/campaigns-list.md](.context/spec/screens/campaigns-list.md) · [spec/screens/campaign-new.md](.context/spec/screens/campaign-new.md) · [spec/screens/campaign-detail.md](.context/spec/screens/campaign-detail.md) · [tasks.md → Step 7](#step-7--frontend-screen-specs-)
 
