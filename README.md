@@ -12,9 +12,9 @@ Mini Campaign Manager is a small full-stack MarTech app to create, schedule, sen
 
 ## Basic Architecture
 
-- Monorepo with npm workspaces.
-- Backend: Express + TypeScript + Knex + PostgreSQL + Zod + JWT.
-- Frontend: React + Vite + TypeScript + Redux Toolkit + RTK Query + shadcn/ui.
+- **Monorepo** managed by **npm workspaces**, with two packages:
+  - Backend - `packages/api`: Express + TypeScript + Knex + PostgreSQL + Zod + JWT.
+  - Frontend - `packages/web`: React + Vite + TypeScript + Redux Toolkit + RTK Query + shadcn/ui.
 - Infra: Docker Compose (`postgres`, `api`, `web`).
 
 Architecture references:
@@ -73,6 +73,12 @@ Compose-based startup behavior:
 ```bash
 RUN_SEED=true docker compose up --build
 ```
+
+The demo seed uses the following data:
+
+- 1 user: `demo@example.com` with password `password123`
+- 3 campaigns: With different statuses and recipients
+- 5 recipients: With different emails and names
 
 ## Tests
 
