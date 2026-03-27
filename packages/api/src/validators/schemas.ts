@@ -52,6 +52,11 @@ export const scheduleCampaignSchema = z.object({
   ]),
 });
 
+export const listCampaignsQuerySchema = z.object({
+  page: z.coerce.number().int().min(1).default(1).optional(),
+  limit: z.coerce.number().int().min(1).max(100).default(20).optional(),
+});
+
 export const idParamSchema = z.object({
   id: z
     .string()

@@ -7,6 +7,7 @@ import {
   updateCampaignSchema,
   scheduleCampaignSchema,
   idParamSchema,
+  listCampaignsQuerySchema,
 } from '../validators/schemas';
 import {
   isCampaignEditable,
@@ -38,15 +39,19 @@ async function getFullCampaign(campaignId: number, userId: number) {
 
 // GET /campaigns
 router.get('/', async (req: Request, res: Response) => {
+  const queryResult = listCampaignsQuerySchema.safeParse(req.query);
+  if (!queryResult.success) {
+    res.status(400).json({ error: 'Validation failed', details: queryResult.error.errors });
+    return;
+  }
+  const { page = 1, limit = 20 } = queryResult.data;
   const userId = req.user!.id;
-  const page = Math.max(1, parseInt(String(req.query.page || '1'), 10) || 1);
-  const limit = Math.min(100, Math.max(1, parseInt(String(req.query.limit || '20'), 10) || 20));
   const offset = (page - 1) * limit;
 
   const [{ count }] = await db('campaigns').where({ created_by: userId }).count('id as count');
   const total = parseInt(String(count), 10);
 
-  const campaigns = await db('campaigns as c')
+  const rows = await db('campaigns as c')
     .where('c.created_by', userId)
     .leftJoin('campaign_recipients as cr', 'cr.campaign_id', 'c.id')
     .select('c.*')
@@ -56,12 +61,12 @@ router.get('/', async (req: Request, res: Response) => {
     .limit(limit)
     .offset(offset);
 
-  const data = campaigns.map(c => ({
+  const campaigns = rows.map(c => ({
     ...c,
     recipient_count: parseInt(String(c.recipient_count), 10),
   }));
 
-  res.json({ data, pagination: { page, limit, total } });
+  res.json({ campaigns, pagination: { page, limit, total } });
 });
 
 // POST /campaigns
