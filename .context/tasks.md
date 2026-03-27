@@ -37,7 +37,7 @@ Create detailed spec documents in plain English before touching code. **No code 
 
 ---
 
-## Step 2 — Project Scaffolding `[ ]`
+## Step 2 — Project Scaffolding `[x]`
 
 **Skills:** `superpowers:dispatching-parallel-agents` (`packages/api` and `packages/web` are independent — run in parallel)
 
@@ -46,12 +46,12 @@ Create detailed spec documents in plain English before touching code. **No code 
 Set up the monorepo structure with working dev environment before writing any feature code.
 
 **Sub-tasks:**
-- [ ] Initialize root `package.json` with `"workspaces": ["packages/*"]`
-- [ ] Add `.nvmrc` with current LTS Node version
-- [ ] Scaffold `packages/api/` — Express + TypeScript, tsconfig, Vitest config, Knex config, folder structure (`src/routes`, `src/controllers`, `src/db`, `src/middleware`, `src/validators`)
-- [ ] Scaffold `packages/web/` — Vite + React + TypeScript, Tailwind CSS, shadcn/ui init, Redux store stub, RTK Query base API stub, React Router setup
-- [ ] Write `docker-compose.yml` with services: `postgres`, `api` (hot-reload), `web` (Vite dev server with proxy to api)
-- [ ] Add `npm run dev` at root that starts all services (or delegate to docker compose)
+- [x] Initialize root `package.json` with `"workspaces": ["packages/*"]`
+- [x] Add `.nvmrc` with current LTS Node version
+- [x] Scaffold `packages/api/` — Express + TypeScript, tsconfig, Vitest config, Knex config, folder structure (`src/routes`, `src/controllers`, `src/db`, `src/middleware`, `src/validators`)
+- [x] Scaffold `packages/web/` — Vite + React + TypeScript, Tailwind CSS, shadcn/ui init, Redux store stub, RTK Query base API stub, React Router setup
+- [x] Write `docker-compose.yml` with services: `postgres`, `api` (hot-reload), `web` (Vite dev server with proxy to api)
+- [x] Add `npm run dev` at root that starts all services (or delegate to docker compose)
 - [ ] Verify: `docker compose up` starts all three services without errors
 
 **Links:** [constituents.md](.context/constituents.md)
