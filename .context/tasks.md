@@ -78,7 +78,7 @@ Write failing unit tests for all critical business logic. No implementation yet 
 
 ---
 
-## Step 4 — Backend Implementation `[ ]`
+## Step 4 — Backend Implementation `[x]`
 
 **Skills:** `superpowers:tdd` (make Step 3 tests pass) · `superpowers:dispatching-parallel-agents` (auth, campaign CRUD, stats routes independent) · `superpowers:requesting-code-review` (after all routes pass)
 
@@ -87,17 +87,17 @@ Write failing unit tests for all critical business logic. No implementation yet 
 Implement all BE features to make Step 3 tests green. Swagger must be reviewable before this step is marked done.
 
 **Sub-tasks:**
-- [ ] Knex migration: create all tables with constraints and indexes (from [spec/db-schema.md](.context/spec/db-schema.md))
-- [ ] Knex seed: at least 1 user, 3 campaigns (one per status), 5 recipients, with campaign_recipients
-- [ ] `npm run migrate` and `npm run seed` npm scripts in `packages/api`
-- [ ] Auth routes: `POST /auth/register`, `POST /auth/login` with Zod validation and JWT signing
-- [ ] JWT middleware: extract and verify Bearer token, attach `req.user`
-- [ ] Campaign CRUD routes: list, create, get, update, delete — all with auth middleware and Zod validation
-- [ ] Campaign action routes: `/schedule`, `/send`, `/stats`
-- [ ] Business rule enforcement: draft-only edit/delete, future `scheduled_at`, terminal send
-- [ ] Swagger setup: `swagger-jsdoc` + `swagger-ui-express` at `/api-docs`, document all endpoints
-- [ ] All Step 3 unit tests pass (green)
-- [ ] Verify: all endpoints work via Swagger UI or curl
+- [x] Knex migration: create all tables with constraints and indexes (from [spec/db-schema.md](.context/spec/db-schema.md))
+- [x] Knex seed: at least 1 user, 3 campaigns (one per status), 5 recipients, with campaign_recipients
+- [x] `npm run migrate` and `npm run seed` npm scripts in `packages/api`
+- [x] Auth routes: `POST /auth/register`, `POST /auth/login` with Zod validation and JWT signing
+- [x] JWT middleware: extract and verify Bearer token, attach `req.user`
+- [x] Campaign CRUD routes: list, create, get, update, delete — all with auth middleware and Zod validation
+- [x] Campaign action routes: `/schedule`, `/send`, `/stats`
+- [x] Business rule enforcement: draft-only edit/delete, future `scheduled_at`, terminal send
+- [x] Swagger setup: `swagger-jsdoc` + `swagger-ui-express` at `/api-docs`, document all endpoints
+- [x] All Step 3 unit tests pass (green)
+- [x] Verify: all endpoints work via Swagger UI or curl
 
 **Links:** [spec/db-schema.md](.context/spec/db-schema.md) · [spec/api-contracts.md](.context/spec/api-contracts.md) · [spec/validation-rules.md](.context/spec/validation-rules.md) · [spec/business-rules.md](.context/spec/business-rules.md) · [tasks.md → Step 3](#step-3--unit-test-shells-)
 

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calculateStats } from '../services/campaignService';
+import { calculateStats } from '../services/campaign.utils';
 
 describe('calculateStats', () => {
   it('returns all zeros when no recipients', () => {

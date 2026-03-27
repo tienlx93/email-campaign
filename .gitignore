@@ -38,3 +38,5 @@ coverage/
 
 # Skills — managed by npx skills package
 .agents/skills
+
+.claude/settings.local.json

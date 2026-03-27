@@ -36,7 +36,43 @@ Read these files to understand the project before doing any work:
 - **Frontend**: React 18 + Vite + TypeScript, Redux Toolkit + RTK Query, shadcn/ui, Tailwind CSS, React Quill
 - **Infrastructure**: Docker Compose — services: `postgres`, `api`, `web`
 
-Full details in [constituents.md](.context/constituents.md).
+Full framework details in [constituents.md](.context/constituents.md).
+
+**Before writing any backend code, read [ARCHITECTURE.md](ARCHITECTURE.md).** It defines the four-layer architecture (Routes → Validators → Controllers → Services), layer responsibilities, error flow, and file naming conventions. All backend code must follow these rules.
+
+---
+
+## Architecture Decision Records
+
+When you introduce or change an architectural pattern — not a feature, but a **how-we-build-things** decision — you must update the docs **in the same commit** as the code change.
+
+### What counts as an architecture decision
+
+Update the docs when you:
+- Introduce a new layer, class pattern, or file convention (e.g. "all validators extend BaseValidator")
+- Change how errors are handled across the codebase (e.g. ServiceError + global handler)
+- Add or remove a cross-cutting convention (e.g. "query validators write to req.body")
+- Change import rules between layers (e.g. "controllers must not import from db")
+- Introduce a new shared base class, abstract type, or utility pattern used in more than one file
+
+Do **not** update the docs for:
+- Adding a new endpoint, route, or page (that's a feature, not an architectural decision)
+- Renaming a variable or refactoring within a single file
+- Fixing a bug without changing the pattern
+
+### Where to write it
+
+| Document | What to update |
+|---|---|
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Layer diagram, per-layer rules, error flow, file naming table — anything that governs how layers interact |
+| [.context/constituents.md](.context/constituents.md) | "Key conventions" section — concise bullet pointing to ARCHITECTURE.md for detail |
+
+### How to write it
+
+- State the rule, not the history. Write "Controllers must not import from `db`" not "We decided to move DB access to services".
+- One rule per bullet. Avoid compound sentences that hide two constraints.
+- If the rule has a non-obvious reason, add a one-line rationale in parentheses.
+- Keep ARCHITECTURE.md as the source of detail. constituents.md bullets are summaries with a link.
 
 ---
 

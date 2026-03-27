@@ -44,6 +44,24 @@ email-campaign/
 - JWT decoded in middleware and attached to `req.user`
 - Knex migrations in `src/db/migrations/`, seeds in `src/db/seeds/`
 - No heavy ORMs (no Prisma, no TypeORM)
+- Four-layer architecture: Routes → Validators → Controllers → Services. See [ARCHITECTURE.md](../ARCHITECTURE.md) for the full rules.
+- **Services** hold all business logic and DB access; throw `ServiceError` for expected failures.
+- **Controllers** receive their service via constructor injection; never instantiate services themselves. Thin: extract params, call service, send response. No DB, no business rules, no try/catch.
+- **Validators** are `BaseValidator<T>` subclasses; each domain has its own file with DTO type + Zod schema + class.
+- **Routes** are the composition root: `new Controller(new Service())`. Wire validators and controller methods to Express routes. No logic.
+
+### Class-based architecture (enforced)
+
+**Validators** — each request shape is a `class extends BaseValidator<Dto>` in its own file:
+- Each file exports a DTO type, the raw Zod schema constant, and the validator class
+- `BaseValidator<T>` reads from `source` (`'body'` default, `'params'`, or `'query'`) and writes validated data to `req.body` (or `req.params` for param validators)
+- File layout: `src/validators/<domain>.validator.ts` — one file per domain (e.g. `auth.validator.ts`, `campaign.validator.ts`)
+
+**Controllers** — each resource is a `class` in `src/controllers/<domain>.controller.ts`:
+- Methods are arrow-function properties wrapping `asyncHandler(...)` so `this` binding is safe when passed as middleware
+- No business logic in route files — routes are thin wiring only
+
+**Route files** (`src/routes/`) instantiate validators and controller once, then wire Express routes. No logic beyond `router.verb(path, ...validators, controller.method)`.
 
 ---
 
