@@ -194,10 +194,10 @@ Implement all FE features against the screen specs from Step 7.
 
 ## Completion Checklist
 
-- [ ] `docker compose up` starts everything cleanly
-- [ ] `/api-docs` shows all endpoints in Swagger UI
-- [ ] All Step 3 unit tests pass
-- [ ] Integration test (Step 6) passes
-- [ ] Seed data is loaded and browsable via the UI
-- [ ] All 8 steps marked `[x]`
-- [ ] README updated with setup instructions + "How I Used Claude Code" section
+- [x] `docker compose up` starts everything cleanly
+- [x] `/api-docs` shows all endpoints in Swagger UI
+- [x] All Step 3 unit tests pass
+- [x] Integration test (Step 6) passes
+- [x] Seed data is loaded and browsable via the UI
+- [x] All 8 steps marked `[x]`
+- [x] README updated with setup instructions + "How I Used Claude Code" section
