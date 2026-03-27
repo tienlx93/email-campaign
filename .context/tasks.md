@@ -145,7 +145,7 @@ One end-to-end integration test that spins up a real PostgreSQL database via Tes
 
 ---
 
-## Step 7 — Frontend Screen Specs `[ ]`
+## Step 7 — Frontend Screen Specs `[x]`
 
 **Skills:** `superpowers:brainstorming` (component decomposition, state ownership, RTK Query cache invalidation)
 
@@ -156,13 +156,13 @@ One end-to-end integration test that spins up a real PostgreSQL database via Tes
 Write UI specs before implementing the frontend. These guide Step 8. **No code in spec files** — plain English only.
 
 **Sub-tasks:**
-- [ ] `spec/screens/login.md` — Components, validation messages, API call (`POST /auth/login`), redirect logic, error display
-- [ ] `spec/screens/campaigns-list.md` — Component tree, RTK Query hook, status badge color map, pagination, empty state, skeleton loader
-- [ ] `spec/screens/campaign-new.md` — Form fields (name, subject, QuillJS body, recipient multi-input), submit behavior, redirect, error handling
-- [ ] `spec/screens/campaign-detail.md` — Sections (header, stats, recipients table, actions), conditional buttons per status, progress bars, error/loading states
-- [ ] Each spec: component breakdown, props/data shape, validation rules, API endpoints called, success/error states
+- [x] `spec/screens/login.md` — Components, validation messages, API call (`POST /auth/login`), redirect logic, error display
+- [x] `spec/screens/campaigns-list.md` — Component tree, RTK Query hook, status badge color map, pagination, empty state, skeleton loader
+- [x] `spec/screens/campaign-new.md` — Form fields (name, subject, QuillJS body, recipient multi-input), submit behavior, redirect, error handling
+- [x] `spec/screens/campaign-detail.md` — Sections (header, stats, recipients table, actions), conditional buttons per status, progress bars, error/loading states
+- [x] Each spec: component breakdown, props/data shape, validation rules, API endpoints called, success/error states
 
-**Links:** [spec.md](.context/spec.md) · [spec/api-contracts.md](.context/spec/api-contracts.md)
+**Links:** [spec.md](.context/spec.md) · [spec/api-contracts.md](.context/spec/api-contracts.md) · [spec/screens/login.md](.context/spec/screens/login.md) · [spec/screens/campaigns-list.md](.context/spec/screens/campaigns-list.md) · [spec/screens/campaign-new.md](.context/spec/screens/campaign-new.md) · [spec/screens/campaign-detail.md](.context/spec/screens/campaign-detail.md)
 
 ---
 
