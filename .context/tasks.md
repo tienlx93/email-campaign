@@ -103,7 +103,7 @@ Implement all BE features to make Step 3 tests green. Swagger must be reviewable
 
 ---
 
-## Step 5 — Scheduler `[ ]`
+## Step 5 — Scheduler `[x]`
 
 **Skills:** `superpowers:tdd` (test job registration/cancellation before wiring) · `superpowers:systematic-debugging` (timing/race issues)
 
@@ -112,12 +112,12 @@ Implement all BE features to make Step 3 tests green. Swagger must be reviewable
 Implement background job that auto-sends scheduled campaigns at their `scheduled_at` time.
 
 **Sub-tasks:**
-- [ ] Install `node-schedule` in `packages/api`
-- [ ] Create `src/scheduler/index.ts` — register all pending scheduled campaigns as jobs at app startup
-- [ ] On each job fire: query DB for campaign, verify status still `scheduled`, execute send logic (reuse send service from Step 4)
-- [ ] On campaign schedule/cancel (update to `scheduled_at`): cancel existing job if any, create new job if `scheduled_at` is set
-- [ ] Ensure jobs are cleaned up on process shutdown (graceful shutdown handler)
-- [ ] Verify: schedule a campaign 1–2 minutes in future, confirm it auto-sends
+- [x] Install `node-schedule` in `packages/api`
+- [x] Create `src/scheduler/index.ts` — register all pending scheduled campaigns as jobs at app startup
+- [x] On each job fire: query DB for campaign, verify status still `scheduled`, execute send logic (reuse send service from Step 4)
+- [x] On campaign schedule/cancel (update to `scheduled_at`): cancel existing job if any, create new job if `scheduled_at` is set
+- [x] Ensure jobs are cleaned up on process shutdown (graceful shutdown handler)
+- [x] Verify: schedule a campaign 1–2 minutes in future, confirm it auto-sends
 
 **Links:** [spec/business-rules.md](.context/spec/business-rules.md) · [tasks.md → Step 4](#step-4--backend-implementation-)
 
@@ -129,14 +129,14 @@ Implement background job that auto-sends scheduled campaigns at their `scheduled
 
 **Pause after commit** — wait for human review before proceeding to Step 7.
 
-One end-to-end integration test that spins up a real PostgreSQL database via Testcontainers.
+One end-to-end integration test that spins up a real PostgreSQL database via Testcontainers. The integration tests should be splitted from Unit test, run on demand (default skipped by CI).
 
 **Sub-tasks:**
 - [ ] Install `testcontainers` and `@testcontainers/postgresql` in `packages/api`
-- [ ] Write `src/__tests__/campaign-flow.integration.test.ts`
+- [ ] Write `src/__integration_tests__/campaign-flow.integration.test.ts`
 - [ ] Test flow: register user → login → create campaign → add recipients → schedule → send → verify stats
 - [ ] Run migrations against test container before tests, clean up after
-- [ ] Verify: test passes with `vitest run` (may take 30–60s for container startup)
+- [ ] Verify: test passes with `vitest run:integration` (may take 30–60s for container startup)
 
 **Links:** [tasks.md → Step 3](#step-3--unit-test-shells-) · [tasks.md → Step 4](#step-4--backend-implementation-)
 
