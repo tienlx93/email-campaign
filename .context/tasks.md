@@ -52,13 +52,13 @@ Set up the monorepo structure with working dev environment before writing any fe
 - [x] Scaffold `packages/web/` — Vite + React + TypeScript, Tailwind CSS, shadcn/ui init, Redux store stub, RTK Query base API stub, React Router setup
 - [x] Write `docker-compose.yml` with services: `postgres`, `api` (hot-reload), `web` (Vite dev server with proxy to api)
 - [x] Add `npm run dev` at root that starts all services (or delegate to docker compose)
-- [ ] Verify: `docker compose up` starts all three services without errors
+- [x] Verify: `docker compose up` starts all three services without errors
 
 **Links:** [constituents.md](.context/constituents.md)
 
 ---
 
-## Step 3 — Unit Test Shells `[ ]`
+## Step 3 — Unit Test Shells `[x]`
 
 **Skills:** `superpowers:test-driven-development` (write test shells before implementation; tests drive Step 4)
 
@@ -67,12 +67,12 @@ Set up the monorepo structure with working dev environment before writing any fe
 Write failing unit tests for all critical business logic. No implementation yet — tests define the contracts.
 
 **Sub-tasks:**
-- [ ] Test: campaign status transition guards — edit/delete rejected when status ≠ `draft`
-- [ ] Test: `scheduled_at` validation — rejected when not a future timestamp, accepted when in the future, `null` accepted to cancel
-- [ ] Test: stats calculation — `open_rate`, `send_rate` correct values; edge cases: `total=0`, all sent, none opened
-- [ ] Test: JWT helpers — token generation produces verifiable token; invalid/expired token throws
-- [ ] Test: Zod schemas — at least one valid and one invalid payload per schema (register, login, create campaign, schedule)
-- [ ] All tests should run with `vitest run` and fail (red) at this point — implementation comes in Step 4
+- [x] Test: campaign status transition guards — edit/delete rejected when status ≠ `draft`
+- [x] Test: `scheduled_at` validation — rejected when not a future timestamp, accepted when in the future, `null` accepted to cancel
+- [x] Test: stats calculation — `open_rate`, `send_rate` correct values; edge cases: `total=0`, all sent, none opened
+- [x] Test: JWT helpers — token generation produces verifiable token; invalid/expired token throws
+- [x] Test: Zod schemas — at least one valid and one invalid payload per schema (register, login, create campaign, schedule)
+- [x] All tests should run with `vitest run` and fail (red) at this point — implementation comes in Step 4
 
 **Links:** [spec/validation-rules.md](.context/spec/validation-rules.md) · [spec/business-rules.md](.context/spec/business-rules.md)
 
