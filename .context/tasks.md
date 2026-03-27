@@ -17,7 +17,7 @@
 
 ---
 
-## Step 1 — Detailed DB & API Specs `[ ]`
+## Step 1 — Detailed DB & API Specs `[x]`
 
 **Skills:** `superpowers:brainstorming` (index strategy, API shape, pagination)
 
@@ -28,10 +28,10 @@ Create detailed spec documents in plain English before touching code. **No code 
 **Pause after commit** — wait for human review before proceeding to Step 2.
 
 **Sub-tasks:**
-- [ ] `spec/db-schema.md` — All 4 tables: exact column names, data types, nullability, default values, constraints (UNIQUE, CHECK, FK, CASCADE/RESTRICT), composite PKs, and all required indexes with a one-sentence rationale for each
-- [ ] `spec/api-contracts.md` — Every endpoint: method, path, auth required, request fields (name + type + required/optional), response fields (name + type), HTTP status codes used and the condition for each, error response format
-- [ ] `spec/validation-rules.md` — Per-field validation rules for every request body and path/query param: field name, type, required/optional, constraints (min/max length, format, range, business constraint), error message
-- [ ] `spec/business-rules.md` — Campaign status state machine (all valid transitions and conditions), ownership rule, edit/delete guard, schedule constraint, send terminal rule, recipient upsert rule, stats formula, scheduler startup and runtime behavior
+- [x] `spec/db-schema.md` — All 4 tables: exact column names, data types, nullability, default values, constraints (UNIQUE, CHECK, FK, CASCADE/RESTRICT), composite PKs, and all required indexes with a one-sentence rationale for each
+- [x] `spec/api-contracts.md` — Every endpoint: method, path, auth required, request fields (name + type + required/optional), response fields (name + type), HTTP status codes used and the condition for each, error response format
+- [x] `spec/validation-rules.md` — Per-field validation rules for every request body and path/query param: field name, type, required/optional, constraints (min/max length, format, range, business constraint), error message
+- [x] `spec/business-rules.md` — Campaign status state machine (all valid transitions and conditions), ownership rule, edit/delete guard, schedule constraint, send terminal rule, recipient upsert rule, stats formula, scheduler startup and runtime behavior
 
 **Links:** [constituents.md](.context/constituents.md) · [spec.md](.context/spec.md)
 
