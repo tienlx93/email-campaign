@@ -1,8 +1,10 @@
 import type { Knex } from 'knex';
 
-const DATABASE_URL =
-  process.env.DATABASE_URL ||
-  'postgresql://campaign:campaign@localhost:5432/campaign';
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL environment variable is required');
+}
+
+const DATABASE_URL = process.env.DATABASE_URL;
 
 const TEST_DATABASE_URL = process.env.TEST_DATABASE_URL || DATABASE_URL;
 

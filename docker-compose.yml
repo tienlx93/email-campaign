@@ -27,6 +27,7 @@ services:
       JWT_EXPIRES_IN: 7d
       PORT: 3000
       NODE_ENV: development
+      CORS_ORIGIN: http://localhost:5173
     volumes:
       - ./packages/api:/app
       - /app/node_modules
@@ -34,6 +35,12 @@ services:
       postgres:
         condition: service_healthy
     command: npm run dev
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   web:
     build:
@@ -41,13 +48,12 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5173:5173"
-    environment:
-      VITE_API_URL: http://localhost:3000
     volumes:
       - ./packages/web:/app
       - /app/node_modules
     depends_on:
-      - api
+      api:
+        condition: service_healthy
 
 volumes:
   postgres_data:
