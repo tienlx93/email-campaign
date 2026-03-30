@@ -24,7 +24,7 @@ export class DashboardService {
       .where('c.status', 'sent')
       .whereBetween('c.created_at', [fromTs, toTs])
       .select(
-        db.raw('COUNT(cr.id) as total_recipients'),
+        db.raw('COUNT(cr.recipient_id) as total_recipients'),
         db.raw("SUM(CASE WHEN cr.status = 'sent'          THEN 1 ELSE 0 END) as sent_recipients"),
         db.raw('SUM(CASE WHEN cr.opened_at IS NOT NULL    THEN 1 ELSE 0 END) as opened_recipients'),
         db.raw("SUM(CASE WHEN cr.status = 'failed'        THEN 1 ELSE 0 END) as failed_recipients")
@@ -70,7 +70,7 @@ export class DashboardService {
       .whereBetween('cr.sent_at', [fromTs, toTs])
       .select(
         db.raw(`DATE_TRUNC('${truncFn}', cr.sent_at)::date::text as period`),
-        db.raw('COUNT(cr.id) as sent_recipients'),
+        db.raw('COUNT(cr.recipient_id) as sent_recipients'),
         db.raw('SUM(CASE WHEN cr.opened_at IS NOT NULL THEN 1 ELSE 0 END) as opened_recipients'),
         db.raw("SUM(CASE WHEN cr.status = 'failed'     THEN 1 ELSE 0 END) as failed_recipients")
       )

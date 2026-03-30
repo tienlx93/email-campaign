@@ -1,5 +1,8 @@
 import { BsCalendar3 } from 'react-icons/bs';
-import { Input } from '@/components/ui/input';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { MuiThemeWrapper } from '@/components/dashboard/MuiThemeWrapper';
 import type { DatePreset, GroupBy } from '@/helpers/date-range';
 
 interface Props {
@@ -12,15 +15,11 @@ interface Props {
 }
 
 const PRESETS: { key: DatePreset; label: string }[] = [
-  { key: 'last7',    label: 'Last 7 days' },
-  { key: 'last30',   label: 'Last 30 days' },
-  { key: 'last90',   label: 'Last 3 months' },
-  { key: 'thisYear', label: 'This year' },
+  { key: 'thisWeek',    label: 'This week' },
+  { key: 'thisMonth',   label: 'This month' },
+  { key: 'last3Months', label: 'Last 3 months' },
+  { key: 'thisYear',    label: 'This year' },
 ];
-
-function toInputValue(d: Date): string {
-  return d.toISOString().slice(0, 10);
-}
 
 export function DateFilterBar({ from, to, activePreset, groupBy, onPreset, onCustomRange }: Props) {
   return (
@@ -48,28 +47,38 @@ export function DateFilterBar({ from, to, activePreset, groupBy, onPreset, onCus
 
       <div className="w-px h-5 bg-slate-200 dark:bg-slate-700" />
 
-      {/* Custom range */}
-      <div className="flex items-center gap-2">
-        <Input
-          type="date"
-          value={toInputValue(from)}
-          onChange={e => {
-            const d = new Date(e.target.value + 'T00:00:00');
-            if (!isNaN(d.getTime())) onCustomRange(d, to);
-          }}
-          className="h-7 text-xs w-36"
-        />
-        <span className="text-slate-400 text-sm">→</span>
-        <Input
-          type="date"
-          value={toInputValue(to)}
-          onChange={e => {
-            const d = new Date(e.target.value + 'T23:59:59');
-            if (!isNaN(d.getTime())) onCustomRange(from, d);
-          }}
-          className="h-7 text-xs w-36"
-        />
-      </div>
+      {/* MUI date pickers — From / To */}
+      <MuiThemeWrapper>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <div className="flex items-center gap-2">
+            <DatePicker
+              label="From"
+              value={from}
+              maxDate={to}
+              onChange={date => { if (date) onCustomRange(date, to); }}
+              slotProps={{
+                textField: {
+                  size: 'small',
+                  sx: { width: 150, '& .MuiInputBase-root': { fontSize: 13 } },
+                },
+              }}
+            />
+            <span className="text-slate-400 text-sm">→</span>
+            <DatePicker
+              label="To"
+              value={to}
+              minDate={from}
+              onChange={date => { if (date) onCustomRange(from, date); }}
+              slotProps={{
+                textField: {
+                  size: 'small',
+                  sx: { width: 150, '& .MuiInputBase-root': { fontSize: 13 } },
+                },
+              }}
+            />
+          </div>
+        </LocalizationProvider>
+      </MuiThemeWrapper>
 
       {/* Auto groupBy indicator */}
       <div className="ml-auto flex items-center gap-2">

@@ -92,6 +92,12 @@ export const api = createApi({
         `/dashboard?from=${from}&to=${to}&groupBy=${groupBy}`,
       providesTags: ['Dashboard'],
     }),
+    updateProfile: builder.mutation<{ user: { id: number; email: string; name: string } }, { name: string }>({
+      query: (body) => ({ url: '/auth/profile', method: 'PATCH', body }),
+    }),
+    updatePassword: builder.mutation<void, { currentPassword: string; newPassword: string }>({
+      query: (body) => ({ url: '/auth/password', method: 'PATCH', body }),
+    }),
   }),
 });
 
@@ -106,4 +112,6 @@ export const {
   useScheduleCampaignMutation,
   useSendCampaignMutation,
   useGetDashboardQuery,
+  useUpdateProfileMutation,
+  useUpdatePasswordMutation,
 } = api;

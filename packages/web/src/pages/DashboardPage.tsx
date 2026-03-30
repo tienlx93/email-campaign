@@ -7,15 +7,15 @@ import { VolumeTrendChart } from '@/components/dashboard/VolumeTrendChart';
 import { DeliveryChart } from '@/components/dashboard/DeliveryChart';
 import { useGetDashboardQuery } from '@/store/api';
 import {
-  getPresetRange, computeGroupBy, toIsoDate,
+  getPresetRange, computeGroupBy, toLocalIsoDate,
   type DatePreset, type GroupBy,
 } from '@/helpers/date-range';
 
 export function DashboardPage() {
-  const defaultRange = getPresetRange('last30');
+  const defaultRange = getPresetRange('thisMonth');
   const [from, setFrom] = useState<Date>(defaultRange.from);
   const [to, setTo]     = useState<Date>(defaultRange.to);
-  const [activePreset, setActivePreset] = useState<DatePreset | null>('last30');
+  const [activePreset, setActivePreset] = useState<DatePreset | null>('thisMonth');
   const groupBy: GroupBy = computeGroupBy(from, to);
 
   function handlePreset(preset: DatePreset) {
@@ -32,8 +32,8 @@ export function DashboardPage() {
   }
 
   const { data, isLoading, isError } = useGetDashboardQuery({
-    from: toIsoDate(from),
-    to:   toIsoDate(to),
+    from: toLocalIsoDate(from),
+    to:   toLocalIsoDate(to),
     groupBy,
   });
 
@@ -92,7 +92,7 @@ export function DashboardPage() {
               Campaign Volume Trend
             </h3>
             <p className="text-xs text-slate-400 mb-3">
-              Scheduled · Sent per {groupBy} (drafts excluded — no sent date)
+              Scheduled · Sent per {groupBy} (drafts excluded)
             </p>
             <VolumeTrendChart data={data.volumeSeries} groupBy={groupBy} />
           </div>
