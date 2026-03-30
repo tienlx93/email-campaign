@@ -44,10 +44,16 @@ const authSlice = createSlice({
       localStorage.removeItem(TOKEN_KEY);
       localStorage.removeItem(USER_KEY);
     },
+    updateUser(state, action: PayloadAction<{ name: string }>) {
+      if (state.user) {
+        state.user.name = action.payload.name;
+        localStorage.setItem(USER_KEY, JSON.stringify(state.user));
+      }
+    },
   },
 });
 
-export const { setCredentials, clearCredentials } = authSlice.actions;
+export const { setCredentials, clearCredentials, updateUser } = authSlice.actions;
 export default authSlice.reducer;
 
 export const selectToken = (state: RootState) => state.auth.token;
