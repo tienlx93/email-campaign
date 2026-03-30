@@ -71,11 +71,14 @@ email-campaign/
 |---|---|---|
 | Framework | **React 18+** | With TypeScript |
 | Build tool | **Vite** | Fast HMR dev server |
-| State management | **Redux Toolkit** | Global state: theme, auth status |
+| State management | **Redux Toolkit** | Global state: theme, auth status, sidebar |
 | Data fetching | **RTK Query** (Redux Toolkit Query) | API calls, caching |
 | Auth persistence | **localStorage** | JWT token + user info stored locally |
 | Component library | **shadcn/ui** | Radix UI primitives + Tailwind |
-| CSS framework | **Tailwind CSS** | Utility-first, configured for shadcn/ui |
+| CSS framework | **Tailwind CSS** | Utility-first, class-based dark mode via `.dark` on `<html>` |
+| Icons | **react-icons/bs** (Bootstrap Icons) | All UI icons; never use lucide or emoji for new icons |
+| Charts | **@mui/x-charts** | BarChart for dashboard analytics |
+| Date pickers | **@mui/x-date-pickers** + AdapterDateFns | MUI DatePicker with date-fns v4 adapter |
 | Rich text editor | **React Quill** (`react-quill`) | Email body field |
 | Routing | **React Router v6** | Client-side routing |
 
@@ -83,6 +86,12 @@ email-campaign/
 - RTK Query base API configured with JWT Bearer header injected from Redux store
 - shadcn/ui components installed individually via CLI (`npx shadcn@latest add <component>`); never edit generated files in `src/components/ui/`
 - Tailwind CSS v4 — no `tailwind.config.ts`; CSS variables configured via `@theme inline` block in `index.css`
+- **Dark mode**: class strategy — `dark` class on `<html>`. Applied before first render in `main.tsx` from localStorage; toggled by `toggleTheme` action in `uiSlice`.
+- **Admin layout**: two-column shell — persistent sidebar (220px expanded / 56px icon-only) + top bar (48px). Replaces old top-navbar. `AdminLayout` is the authenticated route wrapper.
+- **uiSlice** (`src/store/uiSlice.ts`): manages `sidebarOpen` (bool) + `theme` ('light'|'dark'), both persisted to localStorage under key `ui_state`.
+- **Avatar**: `src/helpers/avatar.ts` — `getInitials(name)` (first 2 words, uppercased) + `getAvatarColor(name)` (deterministic hash → 6-color palette). Used in TopBar dropdown and Settings profile card.
+- **Date-range helper**: `src/helpers/date-range.ts` — `getPresetRange(preset)`, `computeGroupBy(from, to)`, `formatPeriodLabel(period, groupBy)`, `toLocalIsoDate(d)`.
+- MUI components requiring dark-mode awareness must be wrapped in `<MuiThemeWrapper>` + `<LocalizationProvider>` as needed.
 - Rich text editor uses `react-quill-new` (React 19-compatible fork); shared config in `src/lib/quill.ts`
 - Proxy target for `/api` requests configured via `VITE_API_URL` env var (default `http://localhost:3000`)
 
@@ -92,10 +101,13 @@ See [ARCHITECTURE.md](../ARCHITECTURE.md#frontend-layer-rules) for the full rule
 | Folder | Rule |
 |---|---|
 | `src/pages/` | Thin orchestrators only. No inline Zod schemas, no inline helpers, no business logic. |
+| `src/components/layout/` | `Sidebar.tsx`, `TopBar.tsx` — admin shell components. |
+| `src/components/dashboard/` | Dashboard-specific components: `DateFilterBar`, `KpiCards`, `VolumeTrendChart`, `DeliveryChart`, `MuiThemeWrapper`. |
+| `src/components/settings/` | `ProfileForm.tsx`, `PasswordForm.tsx`. |
 | `src/components/<domain>/` | Domain components. Large sections (identified by comment headers) and sub-components live here. |
-| `src/helpers/` | Pure functions — `date.ts` (formatting) and `api-error.ts` (RTK error extraction). No React. |
+| `src/helpers/` | Pure functions — `date.ts`, `date-range.ts`, `avatar.ts`, `api-error.ts`. No React. |
 | `src/validations/` | One file per domain. Each exports a Zod schema constant + the inferred TypeScript form type. No React. |
-| `src/models/` | Interface-only type definitions. `auth.type.ts` and `campaign.type.ts`. No functions, no Zod. |
+| `src/models/` | Interface-only type definitions. No functions, no Zod. |
 | `src/store/` | RTK Query endpoints are the only place API calls are made. `api.ts` re-exports model types. |
 | `src/components/ui/` | shadcn/ui — never edit directly. Re-add via CLI with `--overwrite` to update. |
 
