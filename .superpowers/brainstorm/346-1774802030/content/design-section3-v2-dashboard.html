@@ -1,0 +1,235 @@
+<h2>Section 3 (v2) — Dashboard · Updated</h2>
+<p class="subtitle">Draft added to KPIs · Draft removed from charts · charts stacked 1-per-row · bars show count labels</p>
+
+<div class="mockup">
+  <div class="mockup-header">Dashboard — Last 30 days · grouped by day</div>
+  <div class="mockup-body" style="padding:0;overflow:hidden;">
+    <div style="display:flex;height:720px;font-family:system-ui,sans-serif;font-size:13px;">
+
+      <!-- Sidebar collapsed -->
+      <div style="width:56px;background:#0f172a;display:flex;flex-direction:column;flex-shrink:0;align-items:center;padding:12px 0;gap:4px;">
+        <div style="width:28px;height:28px;background:#3b82f6;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:13px;margin-bottom:8px;">M</div>
+        <div style="padding:10px;border-left:3px solid #3b82f6;background:#1e293b;width:100%;display:flex;justify-content:center;">📊</div>
+        <div style="padding:10px;width:100%;display:flex;justify-content:center;color:#475569;">📧</div>
+        <div style="padding:10px;width:100%;display:flex;justify-content:center;color:#475569;">⚙️</div>
+      </div>
+
+      <!-- Main -->
+      <div style="flex:1;display:flex;flex-direction:column;min-width:0;background:#f8fafc;">
+        <!-- Top bar -->
+        <div style="height:48px;background:#fff;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;padding:0 20px;gap:14px;flex-shrink:0;">
+          <button style="background:none;border:none;font-size:18px;color:#64748b;cursor:pointer;">☰</button>
+          <span style="font-weight:700;font-size:14px;color:#0f172a;">MarTech Campaign Manager</span>
+          <div style="flex:1;"></div>
+          <span style="color:#64748b;font-size:14px;cursor:pointer;">🌙</span>
+          <div style="display:flex;align-items:center;gap:7px;padding:4px 10px;border:1px solid #e2e8f0;border-radius:8px;cursor:pointer;">
+            <div style="width:24px;height:24px;background:#3b82f6;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:700;">TL</div>
+            <span style="font-size:12px;font-weight:500;color:#374151;">Tien Le</span>
+            <span style="font-size:10px;color:#94a3b8;">▾</span>
+          </div>
+        </div>
+
+        <!-- Page content -->
+        <div style="flex:1;padding:20px;overflow:auto;">
+          <div style="margin-bottom:14px;">
+            <h1 style="font-size:18px;font-weight:700;color:#0f172a;margin:0 0 2px;">Dashboard</h1>
+            <p style="font-size:12px;color:#64748b;margin:0;">Monitor your campaign performance at a glance</p>
+          </div>
+
+          <!-- DATE FILTER BAR -->
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+            <span style="font-size:12px;font-weight:600;color:#374151;">Date Range</span>
+            <div style="display:flex;gap:5px;">
+              <button style="padding:4px 10px;border-radius:99px;background:#3b82f6;color:#fff;border:none;font-size:11px;font-weight:600;">Last 30 days</button>
+              <button style="padding:4px 10px;border-radius:99px;background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0;font-size:11px;">Last 7 days</button>
+              <button style="padding:4px 10px;border-radius:99px;background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0;font-size:11px;">Last 3 months</button>
+              <button style="padding:4px 10px;border-radius:99px;background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0;font-size:11px;">This year</button>
+            </div>
+            <div style="width:1px;height:20px;background:#e2e8f0;"></div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <input type="date" style="padding:4px 8px;border:1px solid #e2e8f0;border-radius:5px;font-size:11px;color:#374151;" value="2026-03-01" readonly/>
+              <span style="color:#94a3b8;">→</span>
+              <input type="date" style="padding:4px 8px;border:1px solid #e2e8f0;border-radius:5px;font-size:11px;color:#374151;" value="2026-03-30" readonly/>
+            </div>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:6px;">
+              <span style="font-size:11px;color:#94a3b8;">Grouped by</span>
+              <span style="background:#f1f5f9;border:1px solid #e2e8f0;padding:3px 8px;border-radius:5px;font-size:11px;color:#374151;font-weight:600;">Day</span>
+            </div>
+          </div>
+
+          <!-- KPI CARDS — 7 cards: Total · Draft · Scheduled · Emails Sent · Success · Open · Failed -->
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:14px;">
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;">
+              <div style="font-size:9px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Total</div>
+              <div style="font-size:20px;font-weight:800;color:#0f172a;">12</div>
+              <div style="font-size:9px;color:#94a3b8;margin-top:1px;">campaigns</div>
+            </div>
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;">
+              <div style="font-size:9px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Draft</div>
+              <div style="font-size:20px;font-weight:800;color:#94a3b8;">5</div>
+              <div style="font-size:9px;color:#94a3b8;margin-top:1px;">campaigns</div>
+            </div>
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;">
+              <div style="font-size:9px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Scheduled</div>
+              <div style="font-size:20px;font-weight:800;color:#f59e0b;">3</div>
+              <div style="font-size:9px;color:#94a3b8;margin-top:1px;">campaigns</div>
+            </div>
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;">
+              <div style="font-size:9px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Emails Sent</div>
+              <div style="font-size:20px;font-weight:800;color:#3b82f6;">1,240</div>
+              <div style="font-size:9px;color:#94a3b8;margin-top:1px;">recipients</div>
+            </div>
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;">
+              <div style="font-size:9px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Success Rate</div>
+              <div style="font-size:20px;font-weight:800;color:#10b981;">94%</div>
+              <div style="font-size:9px;color:#94a3b8;margin-top:1px;">sent / total</div>
+            </div>
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;">
+              <div style="font-size:9px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Open Rate</div>
+              <div style="font-size:20px;font-weight:800;color:#6366f1;">42%</div>
+              <div style="font-size:9px;color:#94a3b8;margin-top:1px;">opened / sent</div>
+            </div>
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;">
+              <div style="font-size:9px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Failed Rate</div>
+              <div style="font-size:20px;font-weight:800;color:#ef4444;">3%</div>
+              <div style="font-size:9px;color:#94a3b8;margin-top:1px;">failed / total</div>
+            </div>
+          </div>
+
+          <!-- Section title -->
+          <div style="margin-bottom:12px;">
+            <h2 style="font-size:15px;font-weight:700;color:#0f172a;margin:0;">Performance Overview</h2>
+            <span style="font-size:11px;color:#94a3b8;">Mar 1 – Mar 30, 2026 · grouped by day</span>
+          </div>
+
+          <!-- CHART 1 — full width -->
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin-bottom:12px;">
+            <div style="font-size:13px;font-weight:600;color:#374151;margin-bottom:2px;">Campaign Volume Trend</div>
+            <div style="font-size:11px;color:#94a3b8;margin-bottom:10px;">Scheduled · Sent campaigns per period (drafts excluded — no sent date)</div>
+            <div style="display:flex;gap:12px;margin-bottom:10px;">
+              <span style="font-size:10px;color:#f59e0b;display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;background:#f59e0b;border-radius:2px;display:inline-block;"></span>Scheduled</span>
+              <span style="font-size:10px;color:#10b981;display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;background:#10b981;border-radius:2px;display:inline-block;"></span>Sent</span>
+            </div>
+            <!-- Bar chart — full width, bars with number labels -->
+            <div style="height:110px;display:flex;align-items:flex-end;gap:6px;padding-bottom:0;position:relative;">
+              <!-- Each bar group with count label on top -->
+              <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:0;">
+                <span style="font-size:8px;color:#64748b;margin-bottom:2px;">2</span>
+                <div style="width:100%;display:flex;flex-direction:column;gap:1px;">
+                  <div style="background:#10b981;height:40px;border-radius:2px 2px 0 0;"></div>
+                  <div style="background:#f59e0b;height:18px;"></div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:0;">
+                <span style="font-size:8px;color:#64748b;margin-bottom:2px;">1</span>
+                <div style="background:#10b981;height:30px;border-radius:2px 2px 0 0;width:100%;"></div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:0;">
+                <span style="font-size:8px;color:#64748b;margin-bottom:2px;">3</span>
+                <div style="width:100%;display:flex;flex-direction:column;gap:1px;">
+                  <div style="background:#10b981;height:55px;border-radius:2px 2px 0 0;"></div>
+                  <div style="background:#f59e0b;height:20px;"></div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:0;">
+                <span style="font-size:8px;color:#64748b;margin-bottom:2px;">1</span>
+                <div style="background:#f59e0b;height:18px;border-radius:2px 2px 0 0;width:100%;"></div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:0;">
+                <span style="font-size:8px;color:#64748b;margin-bottom:2px;">2</span>
+                <div style="background:#10b981;height:38px;border-radius:2px 2px 0 0;width:100%;"></div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:0;">
+                <span style="font-size:8px;color:#64748b;margin-bottom:2px;">1</span>
+                <div style="background:#10b981;height:25px;border-radius:2px 2px 0 0;width:100%;"></div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:0;">
+                <span style="font-size:8px;color:#64748b;margin-bottom:2px;">4</span>
+                <div style="width:100%;display:flex;flex-direction:column;gap:1px;">
+                  <div style="background:#10b981;height:60px;border-radius:2px 2px 0 0;"></div>
+                  <div style="background:#f59e0b;height:15px;"></div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:0;">
+                <span style="font-size:8px;color:#64748b;margin-bottom:2px;">2</span>
+                <div style="background:#10b981;height:35px;border-radius:2px 2px 0 0;width:100%;"></div>
+              </div>
+            </div>
+            <div style="display:flex;gap:6px;margin-top:4px;border-top:1px solid #f1f5f9;padding-top:4px;">
+              <div style="flex:1;font-size:8px;color:#94a3b8;text-align:center;">Mar 1</div>
+              <div style="flex:1;font-size:8px;color:#94a3b8;text-align:center;">Mar 5</div>
+              <div style="flex:1;font-size:8px;color:#94a3b8;text-align:center;">Mar 10</div>
+              <div style="flex:1;font-size:8px;color:#94a3b8;text-align:center;">Mar 15</div>
+              <div style="flex:1;font-size:8px;color:#94a3b8;text-align:center;">Mar 20</div>
+              <div style="flex:1;font-size:8px;color:#94a3b8;text-align:center;">Mar 25</div>
+              <div style="flex:1;font-size:8px;color:#94a3b8;text-align:center;">Mar 28</div>
+              <div style="flex:1;font-size:8px;color:#94a3b8;text-align:center;">Mar 30</div>
+            </div>
+          </div>
+
+          <!-- CHART 2 — full width -->
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:16px;">
+            <div style="font-size:13px;font-weight:600;color:#374151;margin-bottom:2px;">Email Delivery Performance</div>
+            <div style="font-size:11px;color:#94a3b8;margin-bottom:10px;">Sent campaigns only · Sent · Opened · Failed recipients per period</div>
+            <div style="display:flex;gap:12px;margin-bottom:10px;">
+              <span style="font-size:10px;color:#3b82f6;display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;background:#3b82f6;border-radius:2px;display:inline-block;"></span>Sent</span>
+              <span style="font-size:10px;color:#10b981;display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;background:#10b981;border-radius:2px;display:inline-block;"></span>Opened</span>
+              <span style="font-size:10px;color:#ef4444;display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;background:#ef4444;border-radius:2px;display:inline-block;"></span>Failed</span>
+            </div>
+            <div style="height:110px;display:flex;align-items:flex-end;gap:6px;">
+              <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:0;">
+                <span style="font-size:8px;color:#64748b;margin-bottom:2px;">287</span>
+                <div style="width:100%;display:flex;flex-direction:column;gap:1px;">
+                  <div style="background:#10b981;height:35px;border-radius:2px 2px 0 0;"></div>
+                  <div style="background:#3b82f6;height:50px;"></div>
+                  <div style="background:#ef4444;height:8px;"></div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:0;">
+                <span style="font-size:8px;color:#64748b;margin-bottom:2px;">198</span>
+                <div style="width:100%;display:flex;flex-direction:column;gap:1px;">
+                  <div style="background:#10b981;height:25px;border-radius:2px 2px 0 0;"></div>
+                  <div style="background:#3b82f6;height:38px;"></div>
+                  <div style="background:#ef4444;height:5px;"></div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:0;">
+                <span style="font-size:8px;color:#64748b;margin-bottom:2px;">412</span>
+                <div style="width:100%;display:flex;flex-direction:column;gap:1px;">
+                  <div style="background:#10b981;height:48px;border-radius:2px 2px 0 0;"></div>
+                  <div style="background:#3b82f6;height:62px;"></div>
+                  <div style="background:#ef4444;height:7px;"></div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:0;">
+                <span style="font-size:8px;color:#64748b;margin-bottom:2px;">343</span>
+                <div style="width:100%;display:flex;flex-direction:column;gap:1px;">
+                  <div style="background:#10b981;height:40px;border-radius:2px 2px 0 0;"></div>
+                  <div style="background:#3b82f6;height:55px;"></div>
+                  <div style="background:#ef4444;height:6px;"></div>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;gap:6px;margin-top:4px;border-top:1px solid #f1f5f9;padding-top:4px;">
+              <div style="flex:1;font-size:8px;color:#94a3b8;text-align:center;">Mar 10</div>
+              <div style="flex:1;font-size:8px;color:#94a3b8;text-align:center;">Mar 15</div>
+              <div style="flex:1;font-size:8px;color:#94a3b8;text-align:center;">Mar 20</div>
+              <div style="flex:1;font-size:8px;color:#94a3b8;text-align:center;">Mar 25</div>
+            </div>
+          </div>
+
+        </div><!-- end page content -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:12px 16px;margin-top:12px;">
+  <p style="margin:0 0 6px;font-size:13px;color:#166534;font-weight:600;">Changes from v1:</p>
+  <ul style="margin:0;padding-left:16px;font-size:12px;color:#166534;line-height:1.8;">
+    <li>Draft removed from Chart 1 (no sent_at date — can't be placed on a timeline)</li>
+    <li>Draft KPI card added (7 KPI cards total: Total · Draft · Scheduled · Emails Sent · Success Rate · Open Rate · Failed Rate)</li>
+    <li>Charts are now full-width stacked vertically (1 per row)</li>
+    <li>Each bar group shows total count label above it</li>
+  </ul>
+</div>
