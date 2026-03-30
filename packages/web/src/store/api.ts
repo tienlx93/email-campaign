@@ -7,6 +7,7 @@ import type {
   CreateCampaignBody,
   UpdateCampaignBody,
 } from '@/models/campaign.type';
+import type { DashboardResponse, DashboardQueryParams } from '@/models/dashboard.type';
 
 // Re-export model types so pages can import from a single store location if preferred
 export type { AuthResponse } from '@/models/auth.type';
@@ -38,7 +39,7 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Campaign'],
+  tagTypes: ['Campaign', 'Dashboard'],
   endpoints: (builder) => ({
     register: builder.mutation<AuthResponse, { name: string; email: string; password: string }>({
       query: (body) => ({ url: '/auth/register', method: 'POST', body }),
@@ -86,6 +87,11 @@ export const api = createApi({
       query: (id) => ({ url: `/campaigns/${id}/send`, method: 'POST' }),
       invalidatesTags: (_result, _err, id) => [{ type: 'Campaign', id }, 'Campaign'],
     }),
+    getDashboard: builder.query<DashboardResponse, DashboardQueryParams>({
+      query: ({ from, to, groupBy }) =>
+        `/dashboard?from=${from}&to=${to}&groupBy=${groupBy}`,
+      providesTags: ['Dashboard'],
+    }),
   }),
 });
 
@@ -99,4 +105,5 @@ export const {
   useDeleteCampaignMutation,
   useScheduleCampaignMutation,
   useSendCampaignMutation,
+  useGetDashboardQuery,
 } = api;
