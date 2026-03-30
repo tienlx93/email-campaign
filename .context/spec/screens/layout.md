@@ -1,100 +1,194 @@
 ---
-screen: Authenticated Layout
+screen: Admin Portal Layout
 route: all routes under / (except /login and /register)
 auth: required — RequireAuth wrapper redirects to /login if no valid token
 ---
 
-# Authenticated Layout Spec
+# Admin Portal Layout Spec
 
 ## Purpose
 
-Wraps every authenticated page with a consistent shell: a top navigation bar with the app name, a navigation link to the campaigns list, and a user info display showing the current user's name and email. All pages rendered inside this layout inherit the navigation and user context without re-implementing it.
+Provides a persistent two-column admin shell for all authenticated pages. The left sidebar houses navigation, and the top bar contains the app branding and user controls. All authenticated pages are rendered inside this layout.
 
 ---
 
 ## Structure
 
-The layout is a full-viewport flex column:
+The layout is a full-viewport flex row:
 
-- Top: the AppNavbar (fixed height, always visible)
-- Bottom: a scrollable content area that fills the remaining height
+- Left: persistent collapsible sidebar (220px expanded, 56px icon-only collapsed)
+- Right: flex column containing the fixed top bar (48px) and scrollable content area
 
-The page component for each route (CampaignsListPage, NewCampaignPage, CampaignDetailPage) is rendered inside the content area.
-
----
-
-## Components
-
-### AuthenticatedLayout (layout component)
-
-- Wraps content via a React Router `<Outlet />`
-- Reads the current user from the Redux auth slice (`state.auth.user`)
-- If `user` is null (token expired or missing), renders a `<Navigate to="/login" replace />` immediately — this is the RequireAuth guard
-
-### AppNavbar
-
-Rendered at the top of every authenticated page. Contains three zones: left, center (optional), and right.
-
-**Left zone**
-
-- Application logo or wordmark: clicking it navigates to /campaigns
-- The text label is "Campaign Manager"
-
-**Center zone**
-
-- Navigation link: "Campaigns" — navigates to /campaigns
-- The link uses NavLink (React Router) so it receives an "active" visual style (bold or underlined) when the current route starts with /campaigns
-
-**Right zone**
-
-- UserInfo component (see below)
+The sidebar and top bar are always visible on all authenticated pages.
 
 ---
 
-### UserInfo
+## Left Sidebar
 
-Displayed in the right zone of AppNavbar. Shows a static read-only display — no dropdown, no menu.
+### Styling
 
-- Username label: the user's name from the auth slice (`user.name`), displayed in normal weight
-- Email label: the user's email from the auth slice (`user.email`), displayed in muted smaller text below the name
-- Logout button: a ghost-variant button labeled "Logout" rendered to the right of the user info text
+- Background color: dark slate (Tailwind slate-900 / #0f172a)
+- Width: 220px when expanded, 56px when collapsed
+- Smooth transition on width change
 
-The two labels are stacked vertically (name on top, email below) and right-aligned inside the right zone.
+### Content Zones
 
-**Logout behavior:** clicking the Logout button dispatches `clearCredentials` to the auth slice (which removes token and user from state and clears localStorage) then navigates to /login using React Router navigate.
+**Logo Zone (top)**
+
+- Logo icon: blue rounded square background with white "M" letter
+- Logo label: "MarTech / Campaign Mgr" text displayed to the right of the icon
+- Label is hidden when sidebar is collapsed
+- The entire logo zone is non-interactive (no link/button)
+
+**Navigation Groups**
+
+Two navigation groups, each with a group label and menu items. Group labels are hidden when the sidebar is collapsed.
+
+**Group: MAIN MENU**
+
+- Dashboard (BsGrid icon from react-icons/bs)
+- Email Campaigns (BsEnvelope icon from react-icons/bs)
+
+**Group: ACCOUNT**
+
+- User Settings (BsPerson icon from react-icons/bs)
+
+### Navigation Item Styling
+
+Each navigation item displays:
+
+- Icon (left side)
+- Label text (to the right of icon, hidden when collapsed)
+- Active state: left border accent (blue), slightly lighter background, white text
+
+When collapsed, only icons are shown; labels are hidden.
+
+### Collapsed State
+
+When sidebar is collapsed to 56px:
+
+- All group labels are hidden
+- All item labels are hidden
+- Only icons are visible
+- Width transition smooth (200–300ms)
 
 ---
 
-## Data Shape (from Redux auth slice)
+## Top Bar
 
-The layout reads from `state.auth`:
+### Styling
 
-- user.name — string — displayed as the username label
-- user.email — string — displayed as the email label
-- token — string or null — used by RequireAuth to decide whether to redirect
+- Background color: white
+- Height: 48px fixed
+- Bottom border: subtle grey shadow or 1px border
+- Layout: flex row, space-between distribution
+
+### Left Zone (hamburger + site name)
+
+- Hamburger icon button (BsList from react-icons/bs): toggles sidebar between 220px expanded and 56px collapsed
+- Icon button has a hover state (subtle background)
+- Site name: "MarTech Campaign Manager" (bold weight) displayed to the right of hamburger
+- Site name uses a consistent font size (e.g. base or lg)
+
+### Center Zone
+
+Empty; reserved for future use.
+
+### Right Zone (theme + avatar + dropdown)
+
+Displayed left to right:
+
+**1. Theme Toggle Button**
+
+- Icon button (BsMoon in light mode, BsSun in dark mode from react-icons/bs)
+- Toggles between light and dark themes
+- Hover state applied
+- No text label
+
+**2. User Avatar + Dropdown**
+
+- Avatar circle (28px diameter)
+- 2-letter initials derived from the user's display name (e.g. "John Doe" → "JD")
+- Background color: deterministically hashed from the user's name, selected from 6 palette colors (stays consistent for the same user across sessions)
+- Avatar click opens a dropdown menu (see Dropdown Menu below)
+- Initials: white text, centered, bold
+
+**3. Dropdown Menu**
+
+Appears below the avatar when clicked. Contains:
+
+- "User Settings" link (navigates to /settings, closes menu)
+- Divider (horizontal line)
+- "Logout" action (dispatches clearCredentials to auth slice, navigates to /login, closes menu)
 
 ---
 
-## Responsive Behavior
+## No Bottom User Card
 
-On narrow screens (below the sm breakpoint):
-
-- The center navigation link "Campaigns" is hidden; the logo link on the left serves as the only navigation affordance
-- The UserInfo component collapses to show only the Logout button (name and email labels are hidden)
+The sidebar does NOT contain a user info card at the bottom. User identity is displayed only in the top bar (avatar + dropdown).
 
 ---
 
-## Router Setup
+## Redux State (uiSlice)
 
-The authenticated layout is wired in the React Router tree as a parent route:
+New Redux slice manages UI state:
 
-- The layout route has no path of its own; it wraps child routes
-- Child routes: /campaigns (CampaignsListPage), /campaigns/new (NewCampaignPage), /campaigns/:id (CampaignDetailPage)
-- Public routes /login and /register are siblings of the layout route, not children — they render without the AppNavbar
+- sidebarOpen (boolean) — tracks expanded/collapsed state, default true
+- theme (string) — 'light' or 'dark', default 'light'
+
+Both values are persisted to localStorage under the key `ui_state` as a JSON object. They survive page navigation and session restarts.
+
+### Actions
+
+- toggleSidebar() — inverts sidebarOpen
+- toggleTheme() — switches between 'light' and 'dark'
+
+Both actions trigger localStorage update via a middleware or effect.
+
+---
+
+## Light / Dark Mode
+
+- Theme toggle icon in top bar dispatches toggleTheme action
+- On toggle, theme value updated in Redux and localStorage
+- main.tsx on app startup: reads ui_state from localStorage, applies `dark` class to `<html>` element if theme is 'dark'
+- Tailwind CSS dark: mode via class strategy (dark class on html element)
+- CSS variables in index.css support both light and dark color schemes
+- Default theme: light mode
+
+---
+
+## Routing
+
+- Route "/" redirects to "/dashboard" (replaces old redirect to "/campaigns")
+- New routes: /dashboard (DashboardPage), /settings (UserSettingsPage)
+- All authenticated routes remain under AdminLayout (the new two-column shell)
+- Public routes /login and /register are siblings of AdminLayout, not children
+
+---
+
+## Data Dependencies
+
+The layout reads from Redux:
+
+- auth.user (id, name, email) — for avatar initials and dropdown
+- ui.sidebarOpen — for sidebar width state
+- ui.theme — for dark mode class application (read at startup; onChange updates html element)
+
+---
+
+## Avatar Color Hashing
+
+The avatar background color is deterministically chosen from a 6-color palette by hashing the user's name. The hash function ensures:
+
+- Same user name always produces the same color
+- Colors are evenly distributed across the palette
+- Implementation: see src/helpers/avatar.ts
 
 ---
 
 ## Notes
 
-- The layout does not fetch any data of its own; all user info is already in the Redux store after login/register
-- There is no profile edit or settings page in scope; the UserInfo component is read-only labels only
+- The layout does not fetch data; all user info is already in Redux after login
+- Sidebar collapse state and theme preference survive navigation and page reload
+- All navigation icons use react-icons/bs (Bootstrap Icons) for consistency
