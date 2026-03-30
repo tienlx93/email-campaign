@@ -51,14 +51,38 @@ export class CampaignService {
   // ─── Public API ──────────────────────────────────────────────────────────────
 
   async list(userId: number, query: ListCampaignsQueryDto) {
-    const { page = 1, limit = 20 } = query;
+    const { page = 1, limit = 20, search, status } = query;
     const offset = (page - 1) * limit;
 
-    const [{ count }] = await db('campaigns').where({ created_by: userId }).count('id as count');
+    // Base query: filter by user, optional search/status
+    const baseQuery = () => {
+      let q = db('campaigns').where('created_by', userId);
+      if (search) {
+        q = q.where(builder =>
+          builder
+            .whereILike('name', `%${search}%`)
+            .orWhereILike('subject', `%${search}%`)
+        );
+      }
+      if (status) {
+        q = q.where('status', status);
+      }
+      return q;
+    };
+
+    const [{ count }] = await baseQuery().count('id as count');
     const total = parseInt(String(count), 10);
 
     const rows = await db('campaigns as c')
       .where('c.created_by', userId)
+      .modify(q => {
+        if (search) {
+          q.where(b =>
+            b.whereILike('c.name', `%${search}%`).orWhereILike('c.subject', `%${search}%`)
+          );
+        }
+        if (status) q.where('c.status', status);
+      })
       .leftJoin('campaign_recipients as cr', 'cr.campaign_id', 'c.id')
       .select('c.*')
       .count('cr.recipient_id as recipient_count')
@@ -67,7 +91,7 @@ export class CampaignService {
       .limit(limit)
       .offset(offset);
 
-    const campaigns = rows.map(c => ({
+    const campaigns = rows.map((c: Record<string, unknown>) => ({
       ...c,
       recipient_count: parseInt(String(c.recipient_count), 10),
     }));
