@@ -26,6 +26,7 @@ export interface Campaign {
   body: string;
   status: CampaignStatus;
   scheduled_at: string | null;
+  sent_at: string | null;
   created_by: number;
   created_at: string;
   updated_at: string;
@@ -39,6 +40,7 @@ export interface CampaignSummary {
   subject: string;
   status: CampaignStatus;
   scheduled_at: string | null;
+  sent_at: string | null;
   created_at: string;
   recipient_count: number;
 }

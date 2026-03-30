@@ -214,7 +214,7 @@ export class CampaignService {
         .update({ status: 'sent', sent_at: db.fn.now() });
       await trx('campaigns')
         .where({ id: campaignId })
-        .update({ status: 'sent', updated_at: db.fn.now() });
+        .update({ status: 'sent', sent_at: db.fn.now(), updated_at: db.fn.now() });
     });
 
     cancelJob(campaignId);

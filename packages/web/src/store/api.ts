@@ -46,8 +46,16 @@ export const api = createApi({
     login: builder.mutation<AuthResponse, { email: string; password: string }>({
       query: (body) => ({ url: '/auth/login', method: 'POST', body }),
     }),
-    listCampaigns: builder.query<ListCampaignsResponse, { page?: number; limit?: number }>({
-      query: ({ page = 1, limit = 20 } = {}) => `/campaigns?page=${page}&limit=${limit}`,
+    listCampaigns: builder.query<
+      ListCampaignsResponse,
+      { page?: number; limit?: number; search?: string; status?: string }
+    >({
+      query: ({ page = 1, limit = 20, search, status } = {}) => {
+        const params = new URLSearchParams({ page: String(page), limit: String(limit) });
+        if (search) params.set('search', search);
+        if (status && status !== 'all') params.set('status', status);
+        return `/campaigns?${params.toString()}`;
+      },
       providesTags: ['Campaign'],
     }),
     getCampaign: builder.query<Campaign, number>({

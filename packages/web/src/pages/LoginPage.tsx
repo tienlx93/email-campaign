@@ -61,11 +61,9 @@ export function LoginPage() {
                 id="email"
                 type="email"
                 placeholder="you@example.com"
-                {...register('email')}
-                onChange={(e) => {
-                  setApiError(null);
-                  void register('email').onChange(e);
-                }}
+                {...register('email', {
+                  onChange: () => setApiError(null),
+                })}
               />
               {errors.email && (
                 <p className="text-sm text-destructive">{errors.email.message}</p>
@@ -77,11 +75,9 @@ export function LoginPage() {
               <Input
                 id="password"
                 type="password"
-                {...register('password')}
-                onChange={(e) => {
-                  setApiError(null);
-                  void register('password').onChange(e);
-                }}
+                {...register('password', {
+                  onChange: () => setApiError(null),
+                })}
               />
               {errors.password && (
                 <p className="text-sm text-destructive">{errors.password.message}</p>
