@@ -3,6 +3,7 @@ import cors from 'cors';
 import { ServiceError } from './errors/ServiceError';
 import authRouter from './routes/auth';
 import campaignRouter from './routes/campaigns';
+import dashboardRouter from './routes/dashboard';
 import { swaggerSpec, swaggerUi } from './swagger';
 
 const app = express();
@@ -16,6 +17,7 @@ app.get('/health', (_req, res) => {
 
 app.use('/auth', authRouter);
 app.use('/campaigns', campaignRouter);
+app.use('/dashboard', dashboardRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Global error handler — must have exactly 4 params for Express to recognize it

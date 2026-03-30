@@ -10,6 +10,7 @@ export default defineConfig({
     env: {
       JWT_SECRET: 'test-secret',
       JWT_EXPIRES_IN: '1h',
+      DATABASE_URL: 'postgresql://test:test@localhost:5432/test',
     },
   },
 });

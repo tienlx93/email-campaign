@@ -133,7 +133,7 @@ These rules apply to all spec files written by agents (Steps 1, 7 and any derive
 
 | File | Purpose |
 |---|---|
-| [constituents.md](.context/constituents.md) | Framework & architecture decisions (this file) |
+| [constitutions.md](.context/constitutions.md) | Framework & architecture decisions (this file) |
 | [spec.md](.context/spec.md) | Full functional requirements and API/DB specs |
 | [tasks.md](.context/tasks.md) | Step-by-step implementation tasks with status |
 | [spec/](./spec/) | Derived detailed specs (DB schema, API contracts, screen specs) — generated during tasks |

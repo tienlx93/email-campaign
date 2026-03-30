@@ -1,4 +1,4 @@
-From the requirement.md, split into constituents.md about the required framework and architecture, the spec.md about all the requirements specs, and the tasks.md about the steps that I can review and update status after each step. Update the CLAUDE.md to respect those files and follow the links created by those context docs
+From the requirement.md, split into constitutions.md about the required framework and architecture, the spec.md about all the requirements specs, and the tasks.md about the steps that I can review and update status after each step. Update the CLAUDE.md to respect those files and follow the links created by those context docs
 
 here is the general idea about the tasks, you should put more details for better to understand
 step 1: create the detail db structure, api specs with validation rules (in .context/spec/ folder)
@@ -12,7 +12,7 @@ step 8: implement the FE
 
 For derived spec output, link the output back to the tasks; update the tasks status when finished
 
-additional constituents needed:
+additional constitutions needed:
 - use monorepo controlled by npm workspace
 - use docker compose to host all apps in development mode
 - use lts nodejs version for FE and BE
