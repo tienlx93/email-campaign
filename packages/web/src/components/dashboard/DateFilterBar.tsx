@@ -1,8 +1,5 @@
 import { BsCalendar3 } from 'react-icons/bs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { MuiThemeWrapper } from '@/components/dashboard/MuiThemeWrapper';
 import type { DatePreset, GroupBy } from '@/helpers/date-range';
 
 interface Props {
@@ -48,37 +45,33 @@ export function DateFilterBar({ from, to, activePreset, groupBy, onPreset, onCus
       <div className="w-px h-5 bg-slate-200 dark:bg-slate-700" />
 
       {/* MUI date pickers — From / To */}
-      <MuiThemeWrapper>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <div className="flex items-center gap-2">
-            <DatePicker
-              label="From"
-              value={from}
-              maxDate={to}
-              onChange={date => { if (date) onCustomRange(date, to); }}
-              slotProps={{
-                textField: {
-                  size: 'small',
-                  sx: { width: 150, '& .MuiInputBase-root': { fontSize: 13 } },
-                },
-              }}
-            />
-            <span className="text-slate-400 text-sm">→</span>
-            <DatePicker
-              label="To"
-              value={to}
-              minDate={from}
-              onChange={date => { if (date) onCustomRange(from, date); }}
-              slotProps={{
-                textField: {
-                  size: 'small',
-                  sx: { width: 150, '& .MuiInputBase-root': { fontSize: 13 } },
-                },
-              }}
-            />
-          </div>
-        </LocalizationProvider>
-      </MuiThemeWrapper>
+      <div className="flex items-center gap-2">
+        <DatePicker
+          label="From"
+          value={from}
+          maxDate={to}
+          onChange={date => { if (date) onCustomRange(date, to); }}
+          slotProps={{
+            textField: {
+              size: 'small',
+              sx: { width: 150, '& .MuiInputBase-root': { fontSize: 13 } },
+            },
+          }}
+        />
+        <span className="text-slate-400 text-sm">→</span>
+        <DatePicker
+          label="To"
+          value={to}
+          minDate={from}
+          onChange={date => { if (date) onCustomRange(from, date); }}
+          slotProps={{
+            textField: {
+              size: 'small',
+              sx: { width: 150, '& .MuiInputBase-root': { fontSize: 13 } },
+            },
+          }}
+        />
+      </div>
 
       {/* Auto groupBy indicator */}
       <div className="ml-auto flex items-center gap-2">
