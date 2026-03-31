@@ -7,6 +7,12 @@ import { store } from './store';
 import './index.css';
 import App from './App.tsx';
 
+// Apply persisted theme before first render to prevent flash
+try {
+  const ui = JSON.parse(localStorage.getItem('ui_state') ?? '{}') as { theme?: string };
+  if (ui.theme === 'dark') document.documentElement.classList.add('dark');
+} catch { /* ignore */ }
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>

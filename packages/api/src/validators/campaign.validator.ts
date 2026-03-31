@@ -113,11 +113,15 @@ export class CampaignIdParamValidator extends BaseValidator<CampaignIdParamDto> 
 export type ListCampaignsQueryDto = {
   page: number;
   limit: number;
+  search?: string;
+  status?: 'draft' | 'scheduled' | 'sent';
 };
 
 export const listCampaignsQuerySchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce.number().int().min(1).max(100).default(20),
+  search: z.string().trim().max(255).optional(),
+  status: z.enum(['draft', 'scheduled', 'sent']).optional(),
 });
 
 export class ListCampaignsQueryValidator extends BaseValidator<ListCampaignsQueryDto> {

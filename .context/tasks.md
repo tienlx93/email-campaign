@@ -33,7 +33,7 @@ Create detailed spec documents in plain English before touching code. **No code 
 - [x] `spec/validation-rules.md` — Per-field validation rules for every request body and path/query param: field name, type, required/optional, constraints (min/max length, format, range, business constraint), error message
 - [x] `spec/business-rules.md` — Campaign status state machine (all valid transitions and conditions), ownership rule, edit/delete guard, schedule constraint, send terminal rule, recipient upsert rule, stats formula, scheduler startup and runtime behavior
 
-**Links:** [constituents.md](.context/constituents.md) · [spec.md](.context/spec.md)
+**Links:** [constitutions.md](.context/constitutions.md) · [spec.md](.context/spec.md)
 
 ---
 
@@ -54,7 +54,7 @@ Set up the monorepo structure with working dev environment before writing any fe
 - [x] Add `npm run dev` at root that starts all services (or delegate to docker compose)
 - [x] Verify: `docker compose up` starts all three services without errors
 
-**Links:** [constituents.md](.context/constituents.md)
+**Links:** [constitutions.md](.context/constitutions.md)
 
 ---
 

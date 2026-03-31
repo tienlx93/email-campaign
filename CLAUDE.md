@@ -8,7 +8,7 @@ Read these files to understand the project before doing any work:
 
 | File | What it contains |
 |---|---|
-| [.context/constituents.md](.context/constituents.md) | Framework choices, architecture, folder structure, Docker setup |
+| [.context/constitutions.md](.context/constitutions.md) | Framework choices, architecture, folder structure, Docker setup |
 | [.context/spec.md](.context/spec.md) | Full functional requirements: DB schema, API endpoints, business rules, FE pages |
 | [.context/tasks.md](.context/tasks.md) | Step-by-step implementation plan with status tracking |
 | [.context/spec/](.context/spec/) | Derived detailed specs (generated during Step 1) — DB schema, API contracts, validation rules, screen specs |
@@ -36,7 +36,7 @@ Read these files to understand the project before doing any work:
 - **Frontend**: React 18 + Vite + TypeScript, Redux Toolkit + RTK Query, shadcn/ui, Tailwind CSS, React Quill
 - **Infrastructure**: Docker Compose — services: `postgres`, `api`, `web`
 
-Full framework details in [constituents.md](.context/constituents.md).
+Full framework details in [constitutions.md](.context/constitutions.md).
 
 **Before writing backend code, read [packages/api/ARCHITECTURE.md](packages/api/ARCHITECTURE.md).**
 **Before writing frontend code, read [packages/web/ARCHITECTURE.md](packages/web/ARCHITECTURE.md).**
@@ -70,14 +70,14 @@ Do **not** update the docs for:
 |---|---|
 | [packages/api/ARCHITECTURE.md](packages/api/ARCHITECTURE.md) | Backend layer diagram, per-layer rules, error flow, naming conventions |
 | [packages/web/ARCHITECTURE.md](packages/web/ARCHITECTURE.md) | Frontend flow, layer responsibilities, validation and state-management conventions |
-| [.context/constituents.md](.context/constituents.md) | "Key conventions" section — concise bullet pointing to ARCHITECTURE.md for detail |
+| [.context/constitutions.md](.context/constitutions.md) | "Key conventions" section — concise bullet pointing to ARCHITECTURE.md for detail |
 
 ### How to write it
 
 - State the rule, not the history. Write "Controllers must not import from `db`" not "We decided to move DB access to services".
 - One rule per bullet. Avoid compound sentences that hide two constraints.
 - If the rule has a non-obvious reason, add a one-line rationale in parentheses.
-- Keep each package `ARCHITECTURE.md` as the source of detail. `.context/constituents.md` bullets are summaries with links.
+- Keep each package `ARCHITECTURE.md` as the source of detail. `.context/constitutions.md` bullets are summaries with links.
 
 ---
 

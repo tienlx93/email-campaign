@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
   Dialog,
@@ -28,7 +28,7 @@ export function ScheduleDialog({ open, onClose, campaignId }: Props) {
   const [apiError, setApiError] = useState<string | null>(null);
 
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<ScheduleFormValues>({ resolver: zodResolver(scheduleSchema) });
@@ -57,8 +57,25 @@ export function ScheduleDialog({ open, onClose, campaignId }: Props) {
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
           <div className="space-y-1.5">
-            <Label htmlFor="scheduled_at">Date &amp; Time</Label>
-            <Input id="scheduled_at" type="datetime-local" {...register('scheduled_at')} />
+            <Label>Date &amp; Time</Label>
+            <Controller
+              name="scheduled_at"
+              control={control}
+              render={({ field }) => (
+                <DateTimePicker
+                  value={field.value ? new Date(field.value) : null}
+                  onChange={(date) => field.onChange(date ? date.toISOString() : '')}
+                  disablePast
+                  slotProps={{
+                    textField: {
+                      size: 'small',
+                      fullWidth: true,
+                      error: !!errors.scheduled_at,
+                    },
+                  }}
+                />
+              )}
+            />
             {errors.scheduled_at && (
               <p className="text-sm text-destructive">{errors.scheduled_at.message}</p>
             )}

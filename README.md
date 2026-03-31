@@ -12,14 +12,18 @@ Mini Campaign Manager is a small full-stack MarTech app to create, schedule, sen
 
 ### Screenshots
 
-Campaign overview with quick access to campaign actions.
+> Dashboard with range filter, total KPI, Campaign Volume Trend for total emails, and Email Delivery Performance for Opened, Sent, Failed volume
 
-![Campaign List](docs/img-1-campaign-list.png)
+![Dashboard](docs/01-dashboard.png)
 
-Campaign creation/edit flow with scheduling controls.
-Campaign detail page showing recipients and delivery stats.
+> Campaign overview with quick search, filter
 
-![Campaign Details](docs/img-2-campaign-details.png)
+![Campaign List](docs/02-campaign-list.png)
+
+> Campaign creation/edit flow with scheduling controls.
+> Campaign detail page showing recipients and delivery stats.
+
+![Campaign Details](docs/03-campaign-details.png)
 
 ## Basic Architecture
 
@@ -88,8 +92,8 @@ RUN_SEED=true docker compose up --build
 The demo seed uses the following data:
 
 - 1 user: `demo@example.com` with password `password123`
-- 3 campaigns: With different statuses and recipients
-- 5 recipients: With different emails and names
+- 23 campaigns: With different statuses and recipients
+- 10 recipients: With different emails and names
 
 ## Tests
 
@@ -134,7 +138,7 @@ I explicitly used the skill workflow listed in [`.context/tasks.md`](.context/ta
 The implementation followed an SDD process:
 
 - Requirements source: [`.context/requirement.md`](.context/requirement.md)
-- Project context and constraints: [`.context/constituents.md`](.context/constituents.md)
+- Project context and constraints: [`.context/constitutions.md`](.context/constitutions.md)
 - Detailed execution plan: [`.context/tasks.md`](.context/tasks.md)
 - Derived specs (API contracts, validation, business rules, screens): [`.context/spec/`](.context/spec/)
 
@@ -153,7 +157,7 @@ For core business behavior, I followed a test-first approach:
 Throughout implementation, I continuously updated project guidance documents whenever patterns changed:
 
 - `CLAUDE.md` for working rules and agent guidance.
-- `.context/constituents.md` for conventions and architecture summaries.
+- `.context/constitutions.md` for conventions and architecture summaries.
 - `packages/api/ARCHITECTURE.md` and `packages/web/ARCHITECTURE.md` for package-specific architecture rules.
 
 This kept agent context accurate as the codebase evolved and reduced drift between implementation and documentation.
@@ -198,14 +202,14 @@ type CreateUserDto = {
 };
 <...>
 
-add the rule to prefer using classes into the constituents.md file
+add the rule to prefer using classes into the constitutions.md file
 ```
 
 ```text
 now make the refactor to split the work into layers:
 - services will introduce classes for all logic and db handling. 
 - controller should only handle the validation and capture the error from service class
-* also write that improvement into the constituents.md
+* also write that improvement into the constitutions.md
 create the ARCHITECTURE.md about what packages do (currently only for BE) and tell the CLAUDE.md to follow that architecture and convention
 ```
 
@@ -216,7 +220,7 @@ refactor all pages to:
 - split the helper functions to package: helpers to helpers/<helpper-type>.ts
 - split the large component (identified by section comments) and sub component into components/<name of the domain>/<component-name>.tsx
 - split the validation into validations/<domain>.ts
-make sure you update the ARCHITECTURE.md the frontend architecture and the package rule, update the constituents.md about the instruction to follow when edit frontend code
+make sure you update the ARCHITECTURE.md the frontend architecture and the package rule, update the constitutions.md about the instruction to follow when edit frontend code
 ```
 
 
