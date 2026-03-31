@@ -12,14 +12,18 @@ Mini Campaign Manager is a small full-stack MarTech app to create, schedule, sen
 
 ### Screenshots
 
-Campaign overview with quick access to campaign actions.
+> Dashboard with range filter, total KPI, Campaign Volume Trend for total emails, and Email Delivery Performance for Opened, Sent, Failed volume
 
-![Campaign List](docs/img-1-campaign-list.png)
+![Dashboard](docs/01-dashboard.png)
 
-Campaign creation/edit flow with scheduling controls.
-Campaign detail page showing recipients and delivery stats.
+> Campaign overview with quick search, filter
 
-![Campaign Details](docs/img-2-campaign-details.png)
+![Campaign List](docs/02-campaign-list.png)
+
+> Campaign creation/edit flow with scheduling controls.
+> Campaign detail page showing recipients and delivery stats.
+
+![Campaign Details](docs/03-campaign-details.png)
 
 ## Basic Architecture
 
@@ -88,8 +92,8 @@ RUN_SEED=true docker compose up --build
 The demo seed uses the following data:
 
 - 1 user: `demo@example.com` with password `password123`
-- 3 campaigns: With different statuses and recipients
-- 5 recipients: With different emails and names
+- 23 campaigns: With different statuses and recipients
+- 10 recipients: With different emails and names
 
 ## Tests
 

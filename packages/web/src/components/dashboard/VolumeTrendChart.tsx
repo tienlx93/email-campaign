@@ -37,7 +37,7 @@ export function VolumeTrendChart({ data, groupBy }: Props) {
         ]}
         xAxis={[{ scaleType: 'band', data: xLabels }]}
         yAxis={[{ label: 'Campaigns' }]}
-        tooltip={{ trigger: 'item' }}
+        // slotProps={{ tooltip: { trigger: 'item' } }}
         margin={{ top: 30, bottom: 40, left: 50, right: 10 }}
       />
     </MuiThemeWrapper>

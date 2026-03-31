@@ -1,6 +1,43 @@
 import db from '../db';
 import type { DashboardQueryDto } from '../validators/dashboard.validator';
 
+/** Generate every period label (YYYY-MM-DD) between from and to for the given groupBy.
+ *  Labels match what PostgreSQL DATE_TRUNC returns as ::date::text. */
+function generatePeriods(from: string, to: string, groupBy: 'day' | 'week' | 'month'): string[] {
+  const periods: string[] = [];
+  const toDate = new Date(`${to}T00:00:00Z`);
+
+  let cursor: Date;
+
+  if (groupBy === 'day') {
+    cursor = new Date(`${from}T00:00:00Z`);
+    while (cursor <= toDate) {
+      periods.push(cursor.toISOString().slice(0, 10));
+      cursor = new Date(cursor.getTime() + 86_400_000);
+    }
+  } else if (groupBy === 'week') {
+    // DATE_TRUNC('week', ...) in Postgres uses Monday as the week start
+    cursor = new Date(`${from}T00:00:00Z`);
+    const dow = cursor.getUTCDay(); // 0 = Sun
+    const daysToMonday = dow === 0 ? -6 : 1 - dow;
+    cursor = new Date(cursor.getTime() + daysToMonday * 86_400_000);
+    while (cursor <= toDate) {
+      periods.push(cursor.toISOString().slice(0, 10));
+      cursor = new Date(cursor.getTime() + 7 * 86_400_000);
+    }
+  } else {
+    // month
+    const seed = new Date(`${from}T00:00:00Z`);
+    cursor = new Date(Date.UTC(seed.getUTCFullYear(), seed.getUTCMonth(), 1));
+    while (cursor <= toDate) {
+      periods.push(cursor.toISOString().slice(0, 10));
+      cursor = new Date(Date.UTC(cursor.getUTCFullYear(), cursor.getUTCMonth() + 1, 1));
+    }
+  }
+
+  return periods;
+}
+
 export class DashboardService {
   async getSummary(userId: number, dto: DashboardQueryDto) {
     const { from, to, groupBy } = dto;
@@ -55,10 +92,20 @@ export class DashboardService {
       .groupByRaw(`DATE_TRUNC('${truncFn}', created_at)`)
       .orderByRaw(`DATE_TRUNC('${truncFn}', created_at)`);
 
-    const volumeSeries = volumeRows.map((r: Record<string, unknown>) => ({
-      period:         String(r.period),
-      scheduledCount: parseInt(String(r.scheduled_count ?? 0), 10),
-      sentCount:      parseInt(String(r.sent_count      ?? 0), 10),
+    const allPeriods = generatePeriods(from, to, groupBy);
+
+    const volumeByPeriod = new Map(
+      volumeRows.map((r: Record<string, unknown>) => [
+        String(r.period),
+        {
+          scheduledCount: parseInt(String(r.scheduled_count ?? 0), 10),
+          sentCount:      parseInt(String(r.sent_count      ?? 0), 10),
+        },
+      ])
+    );
+    const volumeSeries = allPeriods.map(period => ({
+      period,
+      ...(volumeByPeriod.get(period) ?? { scheduledCount: 0, sentCount: 0 }),
     }));
 
     // ── Delivery series ─────────────────────────────────────────────────────
@@ -77,11 +124,19 @@ export class DashboardService {
       .groupByRaw(`DATE_TRUNC('${truncFn}', cr.sent_at)`)
       .orderByRaw(`DATE_TRUNC('${truncFn}', cr.sent_at)`);
 
-    const deliverySeries = deliveryRows.map((r: Record<string, unknown>) => ({
-      period:           String(r.period),
-      sentRecipients:   parseInt(String(r.sent_recipients    ?? 0), 10),
-      openedRecipients: parseInt(String(r.opened_recipients  ?? 0), 10),
-      failedRecipients: parseInt(String(r.failed_recipients  ?? 0), 10),
+    const deliveryByPeriod = new Map(
+      deliveryRows.map((r: Record<string, unknown>) => [
+        String(r.period),
+        {
+          sentRecipients:   parseInt(String(r.sent_recipients   ?? 0), 10),
+          openedRecipients: parseInt(String(r.opened_recipients ?? 0), 10),
+          failedRecipients: parseInt(String(r.failed_recipients ?? 0), 10),
+        },
+      ])
+    );
+    const deliverySeries = allPeriods.map(period => ({
+      period,
+      ...(deliveryByPeriod.get(period) ?? { sentRecipients: 0, openedRecipients: 0, failedRecipients: 0 }),
     }));
 
     return { kpi, volumeSeries, deliverySeries };

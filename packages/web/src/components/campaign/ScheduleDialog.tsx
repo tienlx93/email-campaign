@@ -58,28 +58,24 @@ export function ScheduleDialog({ open, onClose, campaignId }: Props) {
         <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
           <div className="space-y-1.5">
             <Label>Date &amp; Time</Label>
-            <MuiThemeWrapper>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <Controller
-                  name="scheduled_at"
-                  control={control}
-                  render={({ field }) => (
-                    <DateTimePicker
-                      value={field.value ? new Date(field.value) : null}
-                      onChange={(date) => field.onChange(date ? date.toISOString() : '')}
-                      disablePast
-                      slotProps={{
-                        textField: {
-                          size: 'small',
-                          fullWidth: true,
-                          error: !!errors.scheduled_at,
-                        },
-                      }}
-                    />
-                  )}
+            <Controller
+              name="scheduled_at"
+              control={control}
+              render={({ field }) => (
+                <DateTimePicker
+                  value={field.value ? new Date(field.value) : null}
+                  onChange={(date) => field.onChange(date ? date.toISOString() : '')}
+                  disablePast
+                  slotProps={{
+                    textField: {
+                      size: 'small',
+                      fullWidth: true,
+                      error: !!errors.scheduled_at,
+                    },
+                  }}
                 />
-              </LocalizationProvider>
-            </MuiThemeWrapper>
+              )}
+            />
             {errors.scheduled_at && (
               <p className="text-sm text-destructive">{errors.scheduled_at.message}</p>
             )}
