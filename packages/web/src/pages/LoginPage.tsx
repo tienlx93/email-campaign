@@ -19,7 +19,11 @@ export function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [login, { isLoading }] = useLoginMutation();
-  const [apiError, setApiError] = useState<string | null>(null);
+  const [apiError, setApiError] = useState<string | null>(() => {
+    const msg = sessionStorage.getItem('auth_message');
+    if (msg) sessionStorage.removeItem('auth_message');
+    return msg;
+  });
 
   const {
     register,
@@ -27,14 +31,14 @@ export function LoginPage() {
     formState: { errors },
   } = useForm<LoginFormValues>({ resolver: zodResolver(loginSchema) });
 
-  if (token) return <Navigate to="/campaigns" replace />;
+  if (token) return <Navigate to="/dashboard" replace />;
 
   async function onSubmit(values: LoginFormValues) {
     setApiError(null);
     try {
       const result = await login(values).unwrap();
       dispatch(setCredentials({ token: result.token, user: result.user }));
-      void navigate('/campaigns');
+      void navigate('/dashboard');
     } catch (err: unknown) {
       const status = (err as { status?: number })?.status;
       if (status === 401) {

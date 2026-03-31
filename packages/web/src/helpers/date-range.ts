@@ -22,7 +22,9 @@ export function getPresetRange(preset: DatePreset): DateRange {
 
   // End of today in local time
   const to = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
-  const endOfWeek = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+  // End of current week = Sunday (getDay: 0=Sun … 6=Sat)
+  const daysToSunday = now.getDay() === 0 ? 0 : 7 - now.getDay();
+  const endOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysToSunday, 23, 59, 59, 999);
   const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
 
   let from: Date;

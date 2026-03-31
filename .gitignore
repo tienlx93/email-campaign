@@ -39,5 +39,7 @@ coverage/
 # Skills — managed by npx skills package
 .agents/skills
 .claude/skills
+.playwright-mcp
+.superpowers
 
 .claude/settings.local.json

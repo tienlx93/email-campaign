@@ -1,4 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { clearCredentials } from './authSlice';
 import type { RootState } from './index';
 import type { AuthResponse } from '@/models/auth.type';
 import type {
@@ -27,18 +29,38 @@ export type {
 
 // ─── API ─────────────────────────────────────────────────────────────────────
 
+const rawBaseQuery = fetchBaseQuery({
+  baseUrl: '/api',
+  prepareHeaders(headers, { getState }) {
+    const token = (getState() as RootState).auth.token;
+    if (token) {
+      headers.set('Authorization', `Bearer ${token}`);
+    }
+    return headers;
+  },
+});
+
+const baseQueryWithAuth: BaseQueryFn<FetchArgs | string, unknown, FetchBaseQueryError> = async (
+  args,
+  api,
+  extraOptions,
+) => {
+  const result = await rawBaseQuery(args, api, extraOptions);
+  if (result.error?.status === 401) {
+    // Only treat as expired session when the user already had a token
+    const token = (api.getState() as RootState).auth.token;
+    if (token) {
+      api.dispatch(clearCredentials());
+      sessionStorage.setItem('auth_message', 'Session expired, please sign in again.');
+      window.location.replace('/login');
+    }
+  }
+  return result;
+};
+
 export const api = createApi({
   reducerPath: 'api',
-  baseQuery: fetchBaseQuery({
-    baseUrl: '/api',
-    prepareHeaders(headers, { getState }) {
-      const token = (getState() as RootState).auth.token;
-      if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
-      }
-      return headers;
-    },
-  }),
+  baseQuery: baseQueryWithAuth,
   tagTypes: ['Campaign', 'Dashboard'],
   endpoints: (builder) => ({
     register: builder.mutation<AuthResponse, { name: string; email: string; password: string }>({
